@@ -8,13 +8,17 @@
 namespace SimpleNavigator {
 class Graph {
  public:
+  using AdjacencyMatrix = std::vector<std::vector<int>>;
   Graph() = default;
   explicit Graph(size_t size);
   ~Graph() = default;
 
   void LoadGraphFromFile(const std::string& filename);
   void ExportGraphToDot(const std::string& filename);
+  AdjacencyMatrix GetGraphMatrix() const;
+  size_t GetSize() const noexcept;
 
+  // extra method
   void print_graph() {
     for (size_t i = 0; i < size_; ++i) {
       for (size_t j = 0; j < size_; ++j) {
@@ -33,7 +37,7 @@ class Graph {
                                        std::vector<int>& rows);
   bool CheckFilename(const std::string& filename) const noexcept;
   size_t size_{};
-  std::vector<std::vector<int>> graph_matrix_;
+  AdjacencyMatrix graph_matrix_;
 };
 };  // namespace SimpleNavigator
 
