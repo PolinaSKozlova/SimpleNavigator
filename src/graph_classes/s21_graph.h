@@ -9,11 +9,11 @@ namespace SimpleNavigator {
 class Graph {
  public:
   Graph() = default;
-  Graph(size_t size);
-  ~Graph();
+  explicit Graph(size_t size);
+  ~Graph() = default;
 
-  void LoadGraphFromFile(std::string filename);
-  void ExportGraphToDot(std::string filename);
+  void LoadGraphFromFile(const std::string& filename);
+  void ExportGraphToDot(const std::string& filename);
 
   void print_graph() {
     for (size_t i = 0; i < size_; ++i) {
@@ -25,11 +25,13 @@ class Graph {
   }
 
  private:
+  const std::string GetAbsolutePath(const std::string& filename);
   void AllocateMemoryForGraphMatrix();
-  void FreeMemoryForGraphMatrix();
+  void ClearGraphMatrix();
   void GetSize(const std::string& size);
   void ReadElementsFromAdjacencyMatrix(const std::string& line,
                                        std::vector<int>& rows);
+  bool CheckFilename(const std::string& filename) const noexcept;
   size_t size_{};
   std::vector<std::vector<int>> graph_matrix_;
 };

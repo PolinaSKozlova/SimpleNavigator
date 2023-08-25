@@ -3,31 +3,50 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <sstream>
 
 namespace SimpleNavigator {
 Graph::Graph(size_t size) : size_(size) { AllocateMemoryForGraphMatrix(); }
 
-Graph::~Graph() { FreeMemoryForGraphMatrix(); }
-
-void Graph::LoadGraphFromFile(std::string filename) {
-  std::filesystem::path absolute_path = std::filesystem::absolute(filename);
-  std::ifstream fin;
+void Graph::LoadGraphFromFile(const std::string& filename) {
+  std::ifstream file_to_read;
   std::string line;
-  fin.open(absolute_path.string());
-  if (!fin.is_open()) throw std::invalid_argument("Can't open file");
-  getline(fin, line);
+  file_to_read.open(GetAbsolutePath(filename));
+  if (!file_to_read.is_open()) throw std::invalid_argument("Can't open file");
+  getline(file_to_read, line);
   GetSize(line);
   int i = 0;
-  while (!fin.eof()) {
-    getline(fin, line);
+  while (!file_to_read.eof()) {
+    getline(file_to_read, line);
     if (line.empty()) break;
     ReadElementsFromAdjacencyMatrix(line, graph_matrix_[i++]);
   }
-  fin.close();
+  file_to_read.close();
 }
 
-// void Graph::ExportGraphToDot(std::string filename) {}
+void Graph::ExportGraphToDot(const std::string& filename) {
+  std::ofstream file_to_write;
+  if (!CheckFilename(filename))
+    throw std::invalid_argument("Incorrect filename");
+  file_to_write.open(GetAbsolutePath(filename));
+  file_to_write << "digraph Graph {\n";
+  for (size_t i = 0; i < size_; ++i) {
+    for (size_t j = 0; j < size_; ++j) {
+      if (graph_matrix_[i][j] > 0) {
+        file_to_write << "\t" << (i + 1) << " -> " << (j + 1)
+                      << " [label=" << graph_matrix_[i][j] << "];\n";
+      }
+    }
+  }
+  file_to_write << "}";
+  file_to_write.close();
+}
+
+const std::string Graph::GetAbsolutePath(const std::string& filename) {
+  std::filesystem::path absolute_path = std::filesystem::absolute(filename);
+  return absolute_path.string();
+}
 
 void Graph::AllocateMemoryForGraphMatrix() {
   graph_matrix_.resize(size_);
@@ -36,7 +55,7 @@ void Graph::AllocateMemoryForGraphMatrix() {
   }
 }
 
-void Graph::FreeMemoryForGraphMatrix() {
+void Graph::ClearGraphMatrix() {
   for (size_t i = 0; i < size_; ++i) {
     graph_matrix_[i].clear();
   }
@@ -45,7 +64,7 @@ void Graph::FreeMemoryForGraphMatrix() {
 }
 
 void Graph::GetSize(const std::string& size) {
-  FreeMemoryForGraphMatrix();
+  ClearGraphMatrix();
   size_ = std::stoi(size);
   AllocateMemoryForGraphMatrix();
 }
@@ -64,6 +83,14 @@ void Graph::ReadElementsFromAdjacencyMatrix(const std::string& line,
     }
   }
   if (pos != size_) throw std::invalid_argument("Incorrect matrix size");
+}
+
+bool Graph::CheckFilename(const std::string& filename) const noexcept {
+  if (std::regex_match(filename, std::regex("[A-Za-z\\d]*.(dot|gv)"))) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 };  // namespace SimpleNavigator
