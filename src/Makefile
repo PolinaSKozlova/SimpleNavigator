@@ -10,6 +10,10 @@ REPORT_DIR = report
 GRAPH = s21_graph
 GRAPH_ALGO = s21_graph_algorithms
 
+run:
+	$(CC) $(CC_FLAGS) graph_classes/s21_graph.cc run.cc -o run -g
+	./run
+
 all:
 
 clean:
@@ -61,3 +65,6 @@ clang:
 
 cppcheck:
 	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem *.cc *.h
+
+push:
+	git push origin graph_branch
