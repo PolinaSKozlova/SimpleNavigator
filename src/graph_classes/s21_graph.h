@@ -9,6 +9,7 @@ namespace SimpleNavigator {
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
+  // подумать какие констуркторы нужны
   Graph() = default;
   explicit Graph(size_t size);
   ~Graph() = default;
