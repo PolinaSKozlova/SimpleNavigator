@@ -60,11 +60,11 @@ leaks: run
 	all, clean, test, gcov_report s21_graph.a, s21_graph_algorithms.a
 
 clang:
-	clang-format -i --style=Google *.cc *.h
-	clang-format -n --style=Google *.cc *.h
+	clang-format -i --style=Google graph_classes/*.cc graph_classes/*.h
+	clang-format -n --style=Google graph_classes/*.cc graph_classes/*.h
 
 cppcheck:
-	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem *.cc *.h
+	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h
 
 push:
 	git push origin graph_branch
