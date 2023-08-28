@@ -23,7 +23,7 @@ class GraphAlgorithms {
                                       int startVertex) const;
   int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
                                      int vertex2) const;
-  AdjacencyMatrix GetShortestPathsBetweenAllVertices(Graph& graph) const;
+  AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph) const;
   AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
 
