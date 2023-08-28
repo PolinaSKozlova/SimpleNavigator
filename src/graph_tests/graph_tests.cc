@@ -31,11 +31,35 @@ TEST(graph_load_from_file, test_2) {
   }
 }
 
+TEST(graph_load_from_file, test_3) {
+  SimpleNavigator::Graph graph;
+  try {
+    graph.LoadGraphFromFile("graph_examples/graph_wrong");
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("Incorrect matrix size", std::string(e.what()));
+  }
+}
+
 TEST(graph_load_from_file, test_4) {
   SimpleNavigator::Graph graph;
   try {
     graph.LoadGraphFromFile("graph_examples/graph_68");
   } catch (std::exception &e) {
     EXPECT_EQ("Can't open file", std::string(e.what()));
+  }
+}
+
+TEST(graph_export_to_dot, test_1) {
+  SimpleNavigator::Graph graph;
+  graph.LoadGraphFromFile("graph_examples/graph_11");
+  graph.ExportGraphToDot("graph.dot");
+}
+
+TEST(graph_export_to_dot, test_2) {
+  SimpleNavigator::Graph graph;
+  try {
+    graph.ExportGraphToDot("graph_wrong");
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("Incorrect filename", std::string(e.what()));
   }
 }
