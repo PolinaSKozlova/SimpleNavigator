@@ -4,11 +4,11 @@
 #include "s21_graph.h"
 
 namespace SimpleNavigator {
-struct TsmResult {
-  int* vertices;  // массив с искомым маршрутом (с порядком обхода вершин).
-                  // Вместо int* можно использовать std::vector<int>
-  double distance;  // длина этого маршрута
-};
+// struct TsmResult {
+//   int* vertices;  // массив с искомым маршрутом (с порядком обхода вершин).
+//                   // Вместо int* можно использовать std::vector<int>
+//   double distance;  // длина этого маршрута
+// };
 
 class GraphAlgorithms {
  public:
@@ -19,13 +19,20 @@ class GraphAlgorithms {
   ~GraphAlgorithms() = default;
 
   std::vector<int> DepthFirstSearch(const Graph& graph, int startVertex) const;
-  std::vector<int> BreadthFirstSearch(const Graph& graph,
-                                      int startVertex) const;
-  int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
-                                     int vertex2) const;
-  AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph) const;
-  AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
-  TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
+  // std::vector<int> BreadthFirstSearch(const Graph& graph,
+  //                                     int startVertex) const;
+  // int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
+  //                                    int vertex2) const;
+  // AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph)
+  // const; AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
+  // TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
+  // // extra methods
+  void PrintVector(const std::vector<int>& vector) const {
+    for (int vertex : vector) {
+      std::cout << vertex << " -> ";
+    }
+    std::cout << "end" << std::endl;
+  }
 
  private:
   Graph graph_;

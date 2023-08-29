@@ -12,7 +12,7 @@ GRAPH_ALGO = s21_graph_algorithms
 
 run: clean
 	clear
-	$(CC) $(CC_FLAGS) graph_classes/s21_graph.cc run.cc -o run -g
+	$(CC) $(CC_FLAGS) graph_classes/*.cc run.cc -o run -g
 	./run
 
 all:
@@ -67,5 +67,5 @@ clang:
 cppcheck:
 	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h
 
-push:
-	git push origin graph_branch
+# push:
+# 	git push origin graph_branch
