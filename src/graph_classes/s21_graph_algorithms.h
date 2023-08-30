@@ -28,10 +28,10 @@ class GraphAlgorithms {
   // TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
   // // extra methods
   void PrintVector(const std::vector<int>& vector) const {
-    for (int vertex : vector) {
-      std::cout << vertex << " -> ";
+    for (size_t i = 0; i < vector.size() - 1; i++) {
+      std::cout << vector.at(i) << " -> ";
     }
-    std::cout << "end" << std::endl;
+    std::cout << vector.back() << std::endl;
   }
 
  private:
