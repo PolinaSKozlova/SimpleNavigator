@@ -9,7 +9,9 @@ int main() {
 
   SimpleNavigator::GraphAlgorithms graph_algorithms;
   // graph_algorithms.DepthFirstSearch(graph, 1);
-  graph_algorithms.PrintVector(graph_algorithms.DepthFirstSearch(graph, 1));
+  // graph_algorithms.PrintVector(graph_algorithms.DepthFirstSearch(graph, 1));
+  // graph_algorithms.BreadthFirstSearch(graph, 1);
+  graph_algorithms.PrintVector(graph_algorithms.BreadthFirstSearch(graph, 1));
 
   return 0;
 }

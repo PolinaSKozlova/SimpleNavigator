@@ -1,5 +1,6 @@
 #include "s21_graph_algorithms.h"
 
+#include <queue>
 #include <stack>
 
 namespace SimpleNavigator {
@@ -61,10 +62,29 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
 //   return TsmResult();
 // }
 
-// std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
-//                                                      int startVertex) const
-//                                                      {
-//   return std::vector<int>();
-// }
+std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
+                                                     int startVertex) const {
+  std::vector<int> visited;
+  int num_vertices = graph.GetSize();
+  std::vector<bool> is_visited(graph.GetSize(), false);
+
+  std::queue<int> queue;
+  queue.push(startVertex - 1);
+  is_visited[startVertex - 1] = true;
+
+  while (!queue.empty()) {
+    int current_vertex = queue.front();
+    visited.push_back(current_vertex + 1);
+    queue.pop();
+    for (int neighbor = 0; neighbor < num_vertices; neighbor++) {
+      if (graph.GetGraphMatrix()[current_vertex][neighbor] != 0 &&
+          !is_visited[neighbor]) {
+        queue.push(neighbor);
+        is_visited[neighbor] = true;
+      }
+    }
+  }
+  return visited;
+}
 
 };  // namespace SimpleNavigator

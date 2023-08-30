@@ -19,8 +19,8 @@ class GraphAlgorithms {
   ~GraphAlgorithms() = default;
 
   std::vector<int> DepthFirstSearch(const Graph& graph, int startVertex) const;
-  // std::vector<int> BreadthFirstSearch(const Graph& graph,
-  //                                     int startVertex) const;
+  std::vector<int> BreadthFirstSearch(const Graph& graph,
+                                      int startVertex) const;
   // int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
   //                                    int vertex2) const;
   // AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph)
