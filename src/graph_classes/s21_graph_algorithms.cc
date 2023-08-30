@@ -12,30 +12,20 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   std::stack<int> stack;
   stack.push(startVertex - 1);
   is_visited[startVertex - 1] = true;
+  visited.push_back(startVertex);
   while (!stack.empty()) {
     int current_vertex = stack.top();
-    visited.push_back(current_vertex + 1);
     stack.pop();
-    for (int neighbor = 0; neighbor < num_vertices; neighbor++) {
-      // std::cout << "matrix  [" << current_vertex << "][" << neighbor
-      //           << "] = " << graph.GetGraphMatrix()[current_vertex][neighbor]
-      //           << "  is_visited " << is_visited[neighbor] << std::endl;
+    if (!is_visited[current_vertex]) {
+      is_visited[current_vertex] = true;
+      visited.push_back(current_vertex + 1);
+    }
+    for (int neighbor = num_vertices - 1; neighbor >= 0; --neighbor) {
       if (graph.GetGraphMatrix()[current_vertex][neighbor] != 0 &&
           !is_visited[neighbor]) {
-        // stack.push(neighbor);
-        visited.push_back(neighbor + 1);
-        is_visited[neighbor] = true;
-        // std::cout << "pushed " << neighbor << " to stack" << std::endl;
-      }
-      if (graph.GetGraphMatrix()[current_vertex][neighbor] == 0 &&
-          !is_visited[neighbor]) {
         stack.push(neighbor);
-        is_visited[neighbor] = true;
-        // std::cout << "stack top " << stack.top() << std::endl;
-        // break;
       }
     }
-    // std::cout << " round end" << std::endl;
   }
 
   return visited;
