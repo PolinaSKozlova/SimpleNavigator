@@ -1,6 +1,8 @@
 #ifndef SIMPLE_NAVIGATOR_GRAPH_ALGORITHMS_H
 #define SIMPLE_NAVIGATOR_GRAPH_ALGORITHMS_H
 
+#include <limits>
+
 #include "s21_graph.h"
 
 namespace SimpleNavigator {
@@ -21,8 +23,10 @@ class GraphAlgorithms {
   std::vector<int> DepthFirstSearch(const Graph& graph, int startVertex) const;
   std::vector<int> BreadthFirstSearch(const Graph& graph,
                                       int startVertex) const;
-  // int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
-  //                                    int vertex2) const;
+  int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
+                                     int vertex2) const;
+  int GetClosestVertex(const std::vector<int>& distances,
+                       const std::vector<bool>& is_visited) const;
   // AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph)
   // const; AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   // TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;

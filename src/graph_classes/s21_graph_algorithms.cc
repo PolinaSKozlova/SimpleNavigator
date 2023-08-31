@@ -8,7 +8,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
                                                    int startVertex) const {
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
-  std::vector<bool> is_visited(graph.GetSize(), false);
+  std::vector<bool> is_visited(num_vertices, false);
   std::stack<int> stack;
   stack.push(startVertex - 1);
   is_visited[startVertex - 1] = true;
@@ -31,11 +31,50 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   return visited;
 }
 
-// int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
-//                                                     int vertex1,
-//                                                     int vertex2) const {
-//   return 0;
-// }
+int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
+                                                    int vertex1,
+                                                    int vertex2) const {
+  int num_vertices = graph.GetSize();
+  std::vector<int> distance(num_vertices, std::numeric_limits<int>::max());
+  std::vector<bool> is_visited(num_vertices, false);
+
+  distance[vertex1 - 1] = 0;
+  // is_visited[vertex1 - 1] = true;
+
+  for (int i = 0; i < num_vertices - 1; i++) {
+    int next_v = GetClosestVertex(distance, is_visited);
+    if (next_v == -1) {
+      break;
+    }
+
+    is_visited[next_v] = true;
+
+    for (int v = 0; v < num_vertices; v++) {
+      if (!is_visited[v] && graph.GetGraphMatrix()[next_v][v] != 0) {
+        int weight = graph.GetGraphMatrix()[next_v][v];
+        if (distance[next_v] + weight < distance[v]) {
+          distance[v] = distance[next_v] + weight;
+        }
+      }
+    }
+  }
+
+  return distance[vertex2 - 1];
+}
+
+int GraphAlgorithms::GetClosestVertex(
+    const std::vector<int>& distances,
+    const std::vector<bool>& is_visited) const {
+  int closest_vertex = -1;
+  int min_distance = std::numeric_limits<int>::max();
+  for (size_t i = 0; i < distances.size(); i++) {
+    if (!is_visited[i] && distances[i] < min_distance) {
+      closest_vertex = i;
+      min_distance = distances[i];
+    }
+  }
+  return closest_vertex;
+}
 
 // GraphAlgorithms::AdjacencyMatrix
 // GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph& graph) const {
