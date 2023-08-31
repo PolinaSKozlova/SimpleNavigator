@@ -3,9 +3,12 @@
 
 #include <limits>
 
+#include "../containers/s21_queue.h"
+#include "../containers/s21_stack.h"
 #include "s21_graph.h"
 
 namespace SimpleNavigator {
+const int kInfinity = std::numeric_limits<int>::max();
 // struct TsmResult {
 //   int* vertices;  // массив с искомым маршрутом (с порядком обхода вершин).
 //                   // Вместо int* можно использовать std::vector<int>

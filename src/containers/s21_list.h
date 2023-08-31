@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <initializer_list>
+#include <utility>
 
 namespace containers {
 template <typename T>
@@ -112,8 +113,8 @@ class list {
   explicit list(std::initializer_list<value_type> const &items);
   list(const list &l);
   list(list &&l);
-  s21::list<T> &operator=(list &&l) noexcept;
-  s21::list<T> &operator=(const list &l);
+  list<T> &operator=(list &&l) noexcept;
+  list<T> &operator=(const list &l);
   ~list();
   bool operator!=(const list &other) { return head_ != other.head_; }
   const_reference front() const;

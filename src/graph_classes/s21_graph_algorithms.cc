@@ -9,7 +9,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
   std::vector<bool> is_visited(num_vertices, false);
-  std::stack<int> stack;
+  containers::stack<int> stack;
   stack.push(startVertex - 1);
   is_visited[startVertex - 1] = true;
   visited.push_back(startVertex);
@@ -27,7 +27,6 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
       }
     }
   }
-
   return visited;
 }
 
@@ -35,11 +34,10 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
                                                     int vertex1,
                                                     int vertex2) const {
   int num_vertices = graph.GetSize();
-  std::vector<int> distance(num_vertices, std::numeric_limits<int>::max());
+  std::vector<int> distance(num_vertices, kInfinity);
   std::vector<bool> is_visited(num_vertices, false);
 
   distance[vertex1 - 1] = 0;
-  // is_visited[vertex1 - 1] = true;
 
   for (int i = 0; i < num_vertices - 1; i++) {
     int next_v = GetClosestVertex(distance, is_visited);
@@ -58,7 +56,6 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
       }
     }
   }
-
   return distance[vertex2 - 1];
 }
 
@@ -66,7 +63,7 @@ int GraphAlgorithms::GetClosestVertex(
     const std::vector<int>& distances,
     const std::vector<bool>& is_visited) const {
   int closest_vertex = -1;
-  int min_distance = std::numeric_limits<int>::max();
+  int min_distance = kInfinity;
   for (size_t i = 0; i < distances.size(); i++) {
     if (!is_visited[i] && distances[i] < min_distance) {
       closest_vertex = i;
@@ -96,8 +93,8 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
   std::vector<bool> is_visited(graph.GetSize(), false);
-
-  std::queue<int> queue;
+  // std::queue<int> queue;
+  containers::queue<int> queue;
   queue.push(startVertex - 1);
   is_visited[startVertex - 1] = true;
 

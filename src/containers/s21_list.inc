@@ -20,7 +20,7 @@ list<T>::list(size_type n) : size_(0), head_(nullptr), tail_(nullptr), shadow_no
 }
 
 template <typename T>
-s21::list<T>::list(std::initializer_list<T> const &items)
+list<T>::list(std::initializer_list<T> const &items)
     : size_(0), head_(nullptr), tail_(nullptr), shadow_node_(new Node<T>) {
   shadow_node_->next_ = shadow_node_->prev_ = shadow_node_;
   shadow_node_->value_ = size_;
@@ -332,7 +332,7 @@ typename list<T>::size_type list<T>::max_size() const noexcept {
 
 template <typename T>
 template <typename... Args>
-typenamelist<T>::iterator list<T>::emplace(const_iterator pos,
+typename list<T>::iterator list<T>::emplace(const_iterator pos,
                                                       Args &&...args) {
   list<T> temp_list{args...};
   const_iterator iter = cbegin();
