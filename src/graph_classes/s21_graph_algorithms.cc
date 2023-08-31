@@ -97,10 +97,36 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) const {
   return shortest_paths;
 }
 
-// GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
-//     const Graph& graph) const {
-//   return AdjacencyMatrix();
-// }
+GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
+    const Graph& graph) const {
+  int num_vertices = graph.GetSize();
+  GraphAlgorithms::AdjacencyMatrix mst;
+  mst.resize(num_vertices, std::vector<int>(num_vertices));
+  std::vector<int> vertex(num_vertices, kInfinity);
+  std::vector<bool> is_visited(num_vertices, false);
+
+  vertex[0] = 0;
+
+  for (int i = 0; i < num_vertices - 1; i++) {
+    int closest_vertex = GetClosestVertex(vertex, is_visited);
+    if (closest_vertex == -1) {
+      break;
+    }
+
+    is_visited[closest_vertex] = true;
+
+    for (int v = 0; v < num_vertices; v++) {
+      if (!is_visited[v] && graph.GetGraphMatrix()[closest_vertex][v] != 0 &&
+          graph.GetGraphMatrix()[closest_vertex][v] < vertex[v]) {
+        mst[closest_vertex][v] = graph.GetGraphMatrix()[closest_vertex][v];
+        mst[v][closest_vertex] = graph.GetGraphMatrix()[closest_vertex][v];
+        vertex[v] = graph.GetGraphMatrix()[closest_vertex][v];
+      }
+    }
+  }
+
+  return mst;
+}
 
 // TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
 //     const Graph& graph) const {

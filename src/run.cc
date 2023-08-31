@@ -16,9 +16,14 @@ int main() {
   //            << graph_algorithms.GetShortestPathBetweenVertices(graph, 1, 7)
   //            << std::endl;
 
+  // SimpleNavigator::GraphAlgorithms::AdjacencyMatrix graph_matrix =
+  //     graph_algorithms.GetShortestPathsBetweenAllVertices(graph);
+  // std::cout << " shortest_paths after FW" << std::endl;
+  // graph_algorithms.PrintMatrix(graph_matrix);
+
   SimpleNavigator::GraphAlgorithms::AdjacencyMatrix graph_matrix =
-      graph_algorithms.GetShortestPathsBetweenAllVertices(graph);
-  std::cout << " shortest_paths after FW" << std::endl;
+      graph_algorithms.GetLeastSpanningTree(graph);
+  std::cout << " spanning tree " << std::endl;
   graph_algorithms.PrintMatrix(graph_matrix);
 
   return 0;

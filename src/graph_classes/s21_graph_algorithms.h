@@ -31,7 +31,7 @@ class GraphAlgorithms {
   int GetClosestVertex(const std::vector<int>& distances,
                        const std::vector<bool>& is_visited) const;
   AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph) const;
-  // AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
+  AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   // TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
   //
 
