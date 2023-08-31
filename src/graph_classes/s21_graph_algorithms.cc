@@ -73,10 +73,29 @@ int GraphAlgorithms::GetClosestVertex(
   return closest_vertex;
 }
 
-// GraphAlgorithms::AdjacencyMatrix
-// GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph& graph) const {
-//   return AdjacencyMatrix();
-// }
+GraphAlgorithms::AdjacencyMatrix
+GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) const {
+  int num_vertices = graph.GetSize();
+  GraphAlgorithms::AdjacencyMatrix shortest_paths;
+  // shortest_paths.resize(num_vertices, std::vector<int>(num_vertices));
+  shortest_paths = graph.GetGraphMatrix();
+
+  for (int k = 0; k < num_vertices; k++) {
+    for (int i = 0; i < num_vertices; i++) {
+      for (int j = 0; j < num_vertices; j++) {
+        if (shortest_paths[i][k] && shortest_paths[k][j] && i != j) {
+          if (shortest_paths[i][k] + shortest_paths[k][j] <
+                  shortest_paths[i][j] ||
+              shortest_paths[i][j] == 0) {
+            shortest_paths[i][j] = shortest_paths[i][k] + shortest_paths[k][j];
+          }
+        }
+      }
+    }
+  }
+
+  return shortest_paths;
+}
 
 // GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
 //     const Graph& graph) const {
@@ -112,5 +131,4 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   }
   return visited;
 }
-
 };  // namespace SimpleNavigator

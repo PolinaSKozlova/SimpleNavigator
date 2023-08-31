@@ -19,7 +19,7 @@ class Graph {
   AdjacencyMatrix GetGraphMatrix() const;
   size_t GetSize() const noexcept;
 
-  // extra method
+  // extra methods
   void print_graph() {
     for (size_t i = 0; i < size_; ++i) {
       for (size_t j = 0; j < size_; ++j) {

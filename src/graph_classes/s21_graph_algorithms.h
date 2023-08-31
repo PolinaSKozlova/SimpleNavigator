@@ -30,15 +30,25 @@ class GraphAlgorithms {
                                      int vertex2) const;
   int GetClosestVertex(const std::vector<int>& distances,
                        const std::vector<bool>& is_visited) const;
-  // AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph)
-  // const; AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
+  AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph) const;
+  // AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   // TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
-  // // extra methods
+  //
+
+  // extra methods
   void PrintVector(const std::vector<int>& vector) const {
     for (size_t i = 0; i < vector.size() - 1; i++) {
       std::cout << vector.at(i) << " -> ";
     }
     std::cout << vector.back() << std::endl;
+  }
+  void PrintMatrix(const AdjacencyMatrix m) {
+    for (size_t i = 0; i < m.size(); ++i) {
+      for (size_t j = 0; j < m[i].size(); ++j) {
+        std::cout << m[i][j] << " ";
+      }
+      std::cout << std::endl;
+    }
   }
 
  private:
