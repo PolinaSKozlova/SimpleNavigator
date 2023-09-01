@@ -65,6 +65,8 @@ int GraphAlgorithms::GetClosestVertex(
   int closest_vertex = -1;
   int min_distance = kInfinity;
   for (size_t i = 0; i < distances.size(); i++) {
+    // if (!is_visited[i] &&
+    //     (closest_vertex == -1 || distances[i] < min_distance)) {
     if (!is_visited[i] && distances[i] < min_distance) {
       closest_vertex = i;
       min_distance = distances[i];
@@ -101,31 +103,36 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
     const Graph& graph) const {
   int num_vertices = graph.GetSize();
   GraphAlgorithms::AdjacencyMatrix mst;
+  // GraphAlgorithms::AdjacencyMatrix mst = graph.GetGraphMatrix();
+  // std::vector<bool> visited(num_vertices, false);
+  // visited[0] = true;
   mst.resize(num_vertices, std::vector<int>(num_vertices));
-  std::vector<int> vertex(num_vertices, kInfinity);
-  std::vector<bool> is_visited(num_vertices, false);
+  int i = 0;
+  while (i < num_vertices) {
+    // todo: find the vertex with minimum distance
+    //  create vector of visited pairs
+    ++i;
+  }
+}
 
-  vertex[0] = 0;
-
-  for (int i = 0; i < num_vertices - 1; i++) {
-    int closest_vertex = GetClosestVertex(vertex, is_visited);
-    if (closest_vertex == -1) {
-      break;
-    }
-
-    is_visited[closest_vertex] = true;
-
-    for (int v = 0; v < num_vertices; v++) {
-      if (!is_visited[v] && graph.GetGraphMatrix()[closest_vertex][v] != 0 &&
-          graph.GetGraphMatrix()[closest_vertex][v] < vertex[v]) {
-        mst[closest_vertex][v] = graph.GetGraphMatrix()[closest_vertex][v];
-        mst[v][closest_vertex] = graph.GetGraphMatrix()[closest_vertex][v];
-        vertex[v] = graph.GetGraphMatrix()[closest_vertex][v];
-      }
+return mst;
+}
+int GraphAlgorithms::GetShortestEdge(const Graph& graph,
+                                     int startVertex) const {
+  int edge_with = kInfinity;
+  int num_vertices = graph.GetSize();
+  for (int i = 0; i < num_vertices; i++) {
+    if (graph.GetGraphMatrix()[startVertex][i] != 0 &&
+        graph.GetGraphMatrix()[i][startVertex] != 0 &&
+        (graph.GetGraphMatrix()[startVertex][i] ==
+         graph.GetGraphMatrix()[i][startVertex]))
+      int next_vertex = graph.GetGraphMatrix()[startVertex][i];
+    if (next_vertex < edge_with) {
+      edge_with = next_vertex;
     }
   }
 
-  return mst;
+  return edge_with;
 }
 
 // TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
@@ -157,4 +164,5 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   }
   return visited;
 }
-};  // namespace SimpleNavigator
+}
+;  // namespace SimpleNavigator
