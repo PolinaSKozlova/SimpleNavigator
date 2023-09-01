@@ -92,7 +92,11 @@ class ConsoleApp {
     std::variant<LoadGraph, DepthSearch, BreadthSearch, ShortestPathTwo,
                  ShortestPathAll, LeastSpanningTree>
         var;
-    // std::map<int, > parametres = {}; map для чтения данных с терминала
+    std::map<int,
+             std::variant<LoadGraph, DepthSearch, BreadthSearch,
+                          ShortestPathTwo, ShortestPathAll, LeastSpanningTree>>
+        parametres = {};
+    // map для чтения данных с терминала
     std::visit(GraphVisitor{}, var);
   }
 
