@@ -1,6 +1,7 @@
 #include "s21_graph_algorithms.h"
 
 #include <queue>
+#include <set>
 #include <stack>
 
 namespace SimpleNavigator {
@@ -103,36 +104,51 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
     const Graph& graph) const {
   int num_vertices = graph.GetSize();
   GraphAlgorithms::AdjacencyMatrix mst;
-  // GraphAlgorithms::AdjacencyMatrix mst = graph.GetGraphMatrix();
-  // std::vector<bool> visited(num_vertices, false);
-  // visited[0] = true;
   mst.resize(num_vertices, std::vector<int>(num_vertices));
-  int i = 0;
-  while (i < num_vertices) {
-    // todo: find the vertex with minimum distance
-    //  create vector of visited pairs
-    ++i;
-  }
-}
+  std::vector<bool> visited(num_vertices, false);
 
-return mst;
-}
-int GraphAlgorithms::GetShortestEdge(const Graph& graph,
-                                     int startVertex) const {
-  int edge_with = kInfinity;
-  int num_vertices = graph.GetSize();
+  std::set<std::pair<int, std::pair<int, int>>> queue;
+  // get all edges in graph
   for (int i = 0; i < num_vertices; i++) {
-    if (graph.GetGraphMatrix()[startVertex][i] != 0 &&
-        graph.GetGraphMatrix()[i][startVertex] != 0 &&
-        (graph.GetGraphMatrix()[startVertex][i] ==
-         graph.GetGraphMatrix()[i][startVertex]))
-      int next_vertex = graph.GetGraphMatrix()[startVertex][i];
-    if (next_vertex < edge_with) {
-      edge_with = next_vertex;
+    for (int j = 0; j < num_vertices; j++) {
+      if (graph.GetGraphMatrix()[i][j] != 0) {
+        queue.insert(
+            std::make_pair(graph.GetGraphMatrix()[i][j], std::make_pair(i, j)));
+      }
     }
   }
 
-  return edge_with;
+  // initial iter
+  auto minValue = *queue.begin();
+  mst[minValue.second.first][minValue.second.second] = minValue.first;
+  mst[minValue.second.second][minValue.second.first] = minValue.first;
+  visited[minValue.second.first] = true;
+  visited[minValue.second.second] = true;
+  auto it = queue.erase(queue.begin());
+
+  while (!AreWeDone(visited)) {
+    if (((visited[it->second.first]) && (!visited[it->second.second]))) {
+      mst[it->second.first][it->second.second] = it->first;
+      mst[it->second.second][it->second.first] = it->first;
+      visited[it->second.first] = true;
+      visited[it->second.second] = true;
+      queue.erase(it);
+      it = queue.begin();
+    } else {
+      ++it;
+    }
+  }
+
+  return mst;
+}
+
+bool GraphAlgorithms::AreWeDone(const std::vector<bool> visited) const {
+  for (size_t i = 0; i < visited.size(); i++) {
+    if (!visited[i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
@@ -164,5 +180,4 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   }
   return visited;
 }
-}
-;  // namespace SimpleNavigator
+};  // namespace SimpleNavigator
