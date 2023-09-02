@@ -127,7 +127,8 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   auto it = queue.erase(queue.begin());
 
   while (!AreWeDone(visited)) {
-    if (((visited[it->second.first]) && (!visited[it->second.second]))) {
+    if (((visited[it->second.first]) && (!visited[it->second.second])) ||
+        ((!visited[it->second.first]) && (visited[it->second.second]))) {
       mst[it->second.first][it->second.second] = it->first;
       mst[it->second.second][it->second.first] = it->first;
       visited[it->second.first] = true;
