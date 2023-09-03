@@ -51,41 +51,16 @@ class ConsoleApp {
         break;
       }
       case '2':
-        // if (graph_.IsEmpty()) {
-        //   std::cout << "You should choose the graph\n";
-        // } else {
-        //   std::cout << "Enter the start vertex: \n";
-        //   std::cin >> start_vertex;
-        //   graph_algo_.PrintVector(
-        //       graph_algo_.BreadthFirstSearch(graph_, start_vertex));
-        // }
         if (CheckGraph(start_vertex))
           graph_algo_.PrintVector(
               graph_algo_.BreadthFirstSearch(graph_, start_vertex));
         break;
       case '3':
-        // if (graph_.IsEmpty()) {
-        //   std::cout << "You should choose the graph\n";
-        // } else {
-        //   std::cout << "Enter the start vertex: \n";
-        //   std::cin >> start_vertex;
-        //   graph_algo_.PrintVector(
-        //       graph_algo_.DepthFirstSearch(graph_, start_vertex));
-        // }
         if (CheckGraph(start_vertex))
           graph_algo_.PrintVector(
               graph_algo_.DepthFirstSearch(graph_, start_vertex));
         break;
       case '4':
-        // if (graph_.IsEmpty()) {
-        //   std::cout << "You should choose the graph\n";
-        // } else {
-        //   std::cout << "Enter two verticies for getting shortest path: \n";
-        //   std::cin >> start_vertex >> end_vertex;
-        //   std::cout << graph_algo_.GetShortestPathBetweenVertices(
-        //                    graph_, start_vertex, end_vertex)
-        //             << "\n";
-        // }
         if (CheckGraph()) {
           std::cout << "Enter two verticies for getting shortest path: \n";
           std::cin >> start_vertex >> end_vertex;
@@ -95,22 +70,11 @@ class ConsoleApp {
         }
         break;
       case '5':
-        // if (graph_.IsEmpty()) {
-        //   std::cout << "You should choose the graph\n";
-        // } else {
-        //   graph_algo_.PrintMatrix(
-        //       graph_algo_.GetShortestPathsBetweenAllVertices(graph_));
-        // }
         if (CheckGraph())
           graph_algo_.PrintMatrix(
               graph_algo_.GetShortestPathsBetweenAllVertices(graph_));
         break;
       case '6':
-        // if (graph_.IsEmpty()) {
-        //   std::cout << "You should choose the graph\n";
-        // } else {
-        //   graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
-        // }
         if (CheckGraph())
           graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
         break;
