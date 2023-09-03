@@ -16,6 +16,7 @@ class Graph {
 
   void LoadGraphFromFile(const std::string& filename);
   void ExportGraphToDot(const std::string& filename);
+  bool IsEmpty() const noexcept;
   AdjacencyMatrix GetGraphMatrix() const;
   size_t GetSize() const noexcept;
 

@@ -6,14 +6,17 @@
 
 namespace SimpleNavigator {
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
-                                                   int startVertex) const {
+                                                   int start_vertex) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
   std::vector<bool> is_visited(num_vertices, false);
   containers::stack<int> stack;
-  stack.push(startVertex - 1);
-  is_visited[startVertex - 1] = true;
-  visited.push_back(startVertex);
+  stack.push(start_vertex - 1);
+  is_visited[start_vertex - 1] = true;
+  visited.push_back(start_vertex);
   while (!stack.empty()) {
     int current_vertex = stack.top();
     stack.pop();
@@ -34,6 +37,9 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
 int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
                                                     int vertex1,
                                                     int vertex2) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
   int num_vertices = graph.GetSize();
   std::vector<int> distance(num_vertices, kInfinity);
   std::vector<bool> is_visited(num_vertices, false);
@@ -78,6 +84,9 @@ int GraphAlgorithms::GetClosestVertex(
 
 GraphAlgorithms::AdjacencyMatrix
 GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
   int num_vertices = graph.GetSize();
   GraphAlgorithms::AdjacencyMatrix shortest_paths;
   // shortest_paths.resize(num_vertices, std::vector<int>(num_vertices));
@@ -102,39 +111,41 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) const {
 
 GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
     const Graph& graph) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
   int num_vertices = graph.GetSize();
   GraphAlgorithms::AdjacencyMatrix mst;
   mst.resize(num_vertices, std::vector<int>(num_vertices));
   std::vector<bool> visited(num_vertices, false);
 
-  std::set<std::pair<int, std::pair<int, int>>> queue;
-  // get all edges in graph
+  GraphAlgorithms::VertexSet from_to;
   for (int i = 0; i < num_vertices; i++) {
     for (int j = 0; j < num_vertices; j++) {
       if (graph.GetGraphMatrix()[i][j] != 0) {
-        queue.insert(
+        from_to.insert(
             std::make_pair(graph.GetGraphMatrix()[i][j], std::make_pair(i, j)));
       }
     }
   }
 
   // initial iter
-  auto minValue = *queue.begin();
-  mst[minValue.second.first][minValue.second.second] = minValue.first;
-  mst[minValue.second.second][minValue.second.first] = minValue.first;
-  visited[minValue.second.first] = true;
-  visited[minValue.second.second] = true;
-  auto it = queue.erase(queue.begin());
+  auto min_value = *from_to.begin();
+  mst[min_value.second.first][min_value.second.second] = min_value.first;
+  mst[min_value.second.second][min_value.second.first] = min_value.first;
+  visited[min_value.second.first] = true;
+  visited[min_value.second.second] = true;
+  auto it = from_to.erase(from_to.begin());
 
-  while (!AreWeDone(visited)) {
+  while (!AllVisited(visited)) {
     if (((visited[it->second.first]) && (!visited[it->second.second])) ||
         ((!visited[it->second.first]) && (visited[it->second.second]))) {
       mst[it->second.first][it->second.second] = it->first;
       mst[it->second.second][it->second.first] = it->first;
       visited[it->second.first] = true;
       visited[it->second.second] = true;
-      queue.erase(it);
-      it = queue.begin();
+      from_to.erase(it);
+      it = from_to.begin();
     } else {
       ++it;
     }
@@ -143,7 +154,7 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   return mst;
 }
 
-bool GraphAlgorithms::AreWeDone(const std::vector<bool> visited) const {
+bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
   for (size_t i = 0; i < visited.size(); i++) {
     if (!visited[i]) {
       return false;
@@ -158,14 +169,17 @@ bool GraphAlgorithms::AreWeDone(const std::vector<bool> visited) const {
 // }
 
 std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
-                                                     int startVertex) const {
+                                                     int start_vertex) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
   std::vector<bool> is_visited(graph.GetSize(), false);
   // std::queue<int> queue;
   containers::queue<int> queue;
-  queue.push(startVertex - 1);
-  is_visited[startVertex - 1] = true;
+  queue.push(start_vertex - 1);
+  is_visited[start_vertex - 1] = true;
 
   while (!queue.empty()) {
     int current_vertex = queue.front();
