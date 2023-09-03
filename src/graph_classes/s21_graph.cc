@@ -43,6 +43,8 @@ void Graph::ExportGraphToDot(const std::string& filename) {
   file_to_write.close();
 }
 
+bool Graph::IsEmpty() const noexcept { return graph_matrix_.empty(); }
+
 Graph::AdjacencyMatrix Graph::GetGraphMatrix() const { return graph_matrix_; }
 
 size_t Graph::GetSize() const noexcept { return size_; }
