@@ -9,9 +9,7 @@ namespace SimpleNavigator {
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
-  // подумать какие констуркторы нужны
   Graph() = default;
-  explicit Graph(size_t size);
   ~Graph() = default;
 
   void LoadGraphFromFile(const std::string& filename);
@@ -21,7 +19,7 @@ class Graph {
   size_t GetSize() const noexcept;
 
   // extra methods
-  void print_graph() {
+  void print_graph() const {
     for (size_t i = 0; i < size_; ++i) {
       for (size_t j = 0; j < size_; ++j) {
         std::cout << graph_matrix_[i][j] << " ";

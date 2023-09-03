@@ -7,8 +7,6 @@
 #include <sstream>
 
 namespace SimpleNavigator {
-Graph::Graph(size_t size) : size_(size) { AllocateMemoryForGraphMatrix(); }
-
 void Graph::LoadGraphFromFile(const std::string& filename) {
   std::ifstream file_to_read;
   std::string line;
