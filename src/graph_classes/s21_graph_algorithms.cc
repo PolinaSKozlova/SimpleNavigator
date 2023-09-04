@@ -122,11 +122,15 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
+
+  if (IsOriented(graph)) {
+    throw std::invalid_argument(
+        "Minimum spanning tree can't be found for a directed graph!");
+  }
   int num_vertices = graph.GetSize();
   GraphAlgorithms::AdjacencyMatrix mst;
   mst.resize(num_vertices, std::vector<int>(num_vertices));
   std::vector<bool> visited(num_vertices, false);
-
   GraphAlgorithms::VertexSet from_to;
   for (int i = 0; i < num_vertices; i++) {
     for (int j = 0; j < num_vertices; j++) {
@@ -159,6 +163,17 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   }
 
   return mst;
+}
+
+bool GraphAlgorithms::IsOriented(const Graph& graph) const {
+  for (size_t i = 0; i < graph.GetSize(); i++) {
+    for (size_t j = 0; j < graph.GetSize(); j++) {
+      if (graph.GetGraphMatrix()[i][j] != graph.GetGraphMatrix()[j][i]) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
