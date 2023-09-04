@@ -32,7 +32,8 @@ class ConsoleApp {
       {3, std::bind(&ConsoleApp::Option_3, this)},
       {4, std::bind(&ConsoleApp::Option_4, this)},
       {5, std::bind(&ConsoleApp::Option_5, this)},
-      {6, std::bind(&ConsoleApp::Option_6, this)}};
+      {6, std::bind(&ConsoleApp::Option_6, this)},
+      {7, std::bind(&ConsoleApp::Option_7, this)}};
 
   void DoAlgorithms(const int menu_number) {
     std::system("clear");
@@ -74,31 +75,41 @@ class ConsoleApp {
     }
   }
 
-  void Option_2() const {
-    int start_vertex{};
-    if (std::cin >> start_vertex) {
-      graph_algo_.PrintVector(
-          graph_algo_.BreadthFirstSearch(graph_, start_vertex));
-    } else {
-      std::cout << "Incorrect input\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }
-  }
+  void Option_2() const { DoSearch(&GraphAlgorithms::BreadthFirstSearch); }
 
-  void Option_3() const {
-    int start_vertex{};
-    if (std::cin >> start_vertex) {
-      graph_algo_.PrintVector(
-          graph_algo_.DepthFirstSearch(graph_, start_vertex));
-    } else {
-      std::cout << "Incorrect input\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }
-  }
+  void Option_3() const { DoSearch(&GraphAlgorithms::DepthFirstSearch); }
 
   void Option_4() const {
+    DoSearch(&GraphAlgorithms::GetShortestPathBetweenVertices);
+  }
+
+  void Option_5() const {
+    graph_algo_.PrintMatrix(
+        graph_algo_.GetShortestPathsBetweenAllVertices(graph_));
+  }
+
+  void Option_6() const {
+    graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
+  }
+
+  void Option_7() const { std::cout << "SolveTravelingSalesmanProblem\n"; }
+
+  void DoSearch(
+      std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
+                                     int start_vertex)>
+          f) const {
+    int start_vertex{};
+    if (std::cin >> start_vertex) {
+      graph_algo_.PrintVector(f(graph_algo_, graph_, start_vertex));
+    } else {
+      std::cout << "Incorrect input\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+  }
+  void DoSearch(std::function<int(const GraphAlgorithms&, const Graph& graph,
+                                  int start_vertex, int end_vertex)>
+                    f) const {
     int start_vertex{};
     int end_vertex{};
     std::cout << "Enter the start and the end vertices: \n";
@@ -110,15 +121,6 @@ class ConsoleApp {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-  }
-
-  void Option_5() const {
-    graph_algo_.PrintMatrix(
-        graph_algo_.GetShortestPathsBetweenAllVertices(graph_));
-  }
-
-  void Option_6() const {
-    graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
   }
 
   Graph graph_;
