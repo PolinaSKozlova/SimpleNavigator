@@ -10,6 +10,9 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
+  if (start_vertex < 1 || start_vertex > (int)graph.GetSize()) {
+    throw std::invalid_argument("Invalid start vertex!");
+  }
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
   std::vector<bool> is_visited(num_vertices, false);
@@ -40,6 +43,10 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
+  if (vertex1 < 1 || vertex1 > (int)graph.GetSize() || vertex2 < 1 ||
+      vertex2 > (int)graph.GetSize()) {
+    throw std::invalid_argument("Invalid start or end vertex!");
+  }
   int num_vertices = graph.GetSize();
   std::vector<int> distance(num_vertices, kInfinity);
   std::vector<bool> is_visited(num_vertices, false);
@@ -63,6 +70,10 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
       }
     }
   }
+
+  if (distance[vertex2 - 1] == kInfinity) {
+    return -1;
+  }
   return distance[vertex2 - 1];
 }
 
@@ -72,8 +83,6 @@ int GraphAlgorithms::GetClosestVertex(
   int closest_vertex = -1;
   int min_distance = kInfinity;
   for (size_t i = 0; i < distances.size(); i++) {
-    // if (!is_visited[i] &&
-    //     (closest_vertex == -1 || distances[i] < min_distance)) {
     if (!is_visited[i] && distances[i] < min_distance) {
       closest_vertex = i;
       min_distance = distances[i];
@@ -89,7 +98,6 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) const {
   }
   int num_vertices = graph.GetSize();
   GraphAlgorithms::AdjacencyMatrix shortest_paths;
-  // shortest_paths.resize(num_vertices, std::vector<int>(num_vertices));
   shortest_paths = graph.GetGraphMatrix();
 
   for (int k = 0; k < num_vertices; k++) {
@@ -129,7 +137,6 @@ GraphAlgorithms::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
     }
   }
 
-  // initial iter
   auto min_value = *from_to.begin();
   mst[min_value.second.first][min_value.second.second] = min_value.first;
   mst[min_value.second.second][min_value.second.first] = min_value.first;
@@ -173,10 +180,12 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
+  if (start_vertex < 1 || start_vertex > (int)graph.GetSize()) {
+    throw std::invalid_argument("Invalid start vertex!");
+  }
   std::vector<int> visited;
   int num_vertices = graph.GetSize();
   std::vector<bool> is_visited(graph.GetSize(), false);
-  // std::queue<int> queue;
   containers::queue<int> queue;
   queue.push(start_vertex - 1);
   is_visited[start_vertex - 1] = true;
