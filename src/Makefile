@@ -10,12 +10,13 @@ REPORT_DIR = report
 GRAPH = s21_graph
 GRAPH_ALGO = s21_graph_algorithms
 
-run: clean
-	clear
-	$(CC) $(CC_FLAGS) graph_classes/*.cc run.cc -o run -g
-	./run
 
-all:
+all: app
+
+app: clean
+	$(CC) $(CC_FLAGS) graph_classes/*.cc console_app.cc -o console_app -g
+	rm -rf console_app.dSYM & clear
+	./console_app
 
 clean:
 	rm -rf *.o *.gcno *.gcda *.info *.a $(REPORT_DIR) g_tests run *.dSYM *.dot *.gv
