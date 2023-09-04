@@ -2,6 +2,7 @@
 #define SIMPLE_NAVIGATOR_GRAPH_ALGORITHMS_H
 
 #include <limits>
+#include <set>
 
 #include "../containers/s21_queue.h"
 #include "../containers/s21_stack.h"
@@ -18,7 +19,7 @@ const int kInfinity = std::numeric_limits<int>::max();
 class GraphAlgorithms {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
-  using VertexArray = std::vector<int>;
+  using VertexSet = std::set<std::pair<int, std::pair<int, int>>>;
   GraphAlgorithms() = default;
   // подумать какие констуркторы нужны
   GraphAlgorithms(const Graph& graph) : graph_(graph){};
@@ -29,8 +30,7 @@ class GraphAlgorithms {
                                       int start_vertex) const;
   int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
                                      int vertex2) const;
-  int GetClosestVertex(const std::vector<int>& distances,
-                       const std::vector<bool>& is_visited) const;
+
   AdjacencyMatrix GetShortestPathsBetweenAllVertices(const Graph& graph) const;
   AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   // TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
@@ -53,6 +53,9 @@ class GraphAlgorithms {
   }
 
  private:
+  int GetClosestVertex(const std::vector<int>& distances,
+                       const std::vector<bool>& is_visited) const;
+  bool AllVisited(const std::vector<bool> visited) const;
   Graph graph_;
 };
 };  // namespace SimpleNavigator

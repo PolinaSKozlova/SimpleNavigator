@@ -22,12 +22,12 @@ clean:
 
 test: 
 	clear
-	$(CC) $(CC_FLAGS) graph_classes/s21_graph.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
+	$(CC) $(CC_FLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
 	./g_tests
 
 gcov_report:
 	clear
-	$(CC) $(CC_FLAGS) $(COVERAGE_FLAGS) graph_classes/s21_graph.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
+	$(CC) $(CC_FLAGS) $(COVERAGE_FLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
 	./g_tests
 	lcov -t "$@" -o $@.info -c -d . --no-external  --ignore-errors mismatch --quiet
 	lcov -r $@.info "*include*" -o $@.info  --ignore-errors unused --quiet
