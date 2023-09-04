@@ -63,6 +63,7 @@ class ConsoleApp {
   }
 
   void Option_1() {
+    std::cout << "Enter graph filename\n";
     std::string file_name{};
     std::cin >> file_name;
     try {
@@ -75,24 +76,40 @@ class ConsoleApp {
 
   void Option_2() const {
     int start_vertex{};
-    std::cin >> start_vertex;
-    graph_algo_.PrintVector(
-        graph_algo_.BreadthFirstSearch(graph_, start_vertex));
+    if (std::cin >> start_vertex) {
+      graph_algo_.PrintVector(
+          graph_algo_.BreadthFirstSearch(graph_, start_vertex));
+    } else {
+      std::cout << "Incorrect input\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
 
   void Option_3() const {
     int start_vertex{};
-    std::cin >> start_vertex;
-    graph_algo_.PrintVector(graph_algo_.DepthFirstSearch(graph_, start_vertex));
+    if (std::cin >> start_vertex) {
+      graph_algo_.PrintVector(
+          graph_algo_.DepthFirstSearch(graph_, start_vertex));
+    } else {
+      std::cout << "Incorrect input\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
 
   void Option_4() const {
     int start_vertex{};
     int end_vertex{};
     std::cout << "Enter the start and the end vertices: \n";
-    std::cin >> start_vertex >> end_vertex;
-    std::cout << graph_algo_.GetShortestPathBetweenVertices(
-        graph_, start_vertex, end_vertex);
+    if (std::cin >> start_vertex >> end_vertex) {
+      std::cout << graph_algo_.GetShortestPathBetweenVertices(
+          graph_, start_vertex, end_vertex);
+    } else {
+      std::cout << "Incorrect input\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
 
   void Option_5() const {
