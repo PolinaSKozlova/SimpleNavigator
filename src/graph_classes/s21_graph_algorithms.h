@@ -18,14 +18,15 @@ const int kInfinity = std::numeric_limits<int>::max();
 class GraphAlgorithms {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
+  using VertexArray = std::vector<int>;
   GraphAlgorithms() = default;
   // подумать какие констуркторы нужны
   GraphAlgorithms(const Graph& graph) : graph_(graph){};
   ~GraphAlgorithms() = default;
 
-  std::vector<int> DepthFirstSearch(const Graph& graph, int startVertex) const;
+  std::vector<int> DepthFirstSearch(const Graph& graph, int start_vertex) const;
   std::vector<int> BreadthFirstSearch(const Graph& graph,
-                                      int startVertex) const;
+                                      int start_vertex) const;
   int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
                                      int vertex2) const;
   int GetClosestVertex(const std::vector<int>& distances,
@@ -42,7 +43,7 @@ class GraphAlgorithms {
     }
     std::cout << vector.back() << std::endl;
   }
-  void PrintMatrix(const AdjacencyMatrix m) {
+  void PrintMatrix(const AdjacencyMatrix m) const {
     for (size_t i = 0; i < m.size(); ++i) {
       for (size_t j = 0; j < m[i].size(); ++j) {
         std::cout << m[i][j] << " ";
