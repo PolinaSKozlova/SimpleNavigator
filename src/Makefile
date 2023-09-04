@@ -65,7 +65,7 @@ clang:
 	clang-format -n --style=Google graph_classes/*.cc graph_classes/*.h
 
 cppcheck:
-	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h
+	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h console/console.h
 
-# push:
-# 	git push origin graph_branch
+push:
+	git push origin almost_ready
