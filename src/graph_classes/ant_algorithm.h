@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "s21_graph.h"
+
 namespace SimpleNavigator {
 struct TsmResult {
   std::vector<int> vertices;
@@ -19,7 +21,7 @@ class AntAlgorithm {
  public:
   AntAlgorithm() = default;
   ~AntAlgorithm() = default;
-  void RunAlgoritm();
+  void RunAntAlgoritm(const Graph& graph);
 
  private:
   void FillPheromonMatrix();
