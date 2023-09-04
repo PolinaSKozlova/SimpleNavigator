@@ -45,6 +45,17 @@ TEST(BFS, test_3) {
   }
 }
 
+TEST(BFS, test_4) {
+  SimpleNavigator::Graph graph;
+  SimpleNavigator::GraphAlgorithms graph_algorithms;
+  graph.LoadGraphFromFile("graph_examples/graph_10");
+  try {
+    graph_algorithms.BreadthFirstSearch(graph, 100);
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("Invalid start vertex!", std::string(e.what()));
+  }
+}
+
 TEST(DFS, test_1) {
   SimpleNavigator::Graph graph;
   graph.LoadGraphFromFile("graph_examples/graph_4");
@@ -85,6 +96,17 @@ TEST(DFS, test_3) {
   }
 }
 
+TEST(DFS, test_4) {
+  SimpleNavigator::Graph graph;
+  SimpleNavigator::GraphAlgorithms graph_algorithms;
+  graph.LoadGraphFromFile("graph_examples/graph_10");
+  try {
+    graph_algorithms.DepthFirstSearch(graph, 100);
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("Invalid start vertex!", std::string(e.what()));
+  }
+}
+
 TEST(shortest_path, test_1) {
   SimpleNavigator::Graph graph;
   graph.LoadGraphFromFile("graph_examples/graph_10");
@@ -95,14 +117,35 @@ TEST(shortest_path, test_1) {
   EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 7, 10), 98);
   EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 3, 8), 23);
 }
-
 TEST(shortest_path, test_2) {
+  SimpleNavigator::Graph graph;
+  graph.LoadGraphFromFile("graph_examples/graph_10_o");
+  SimpleNavigator::GraphAlgorithms graph_algorithms;
+  EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 1, 5), 10);
+  EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 10, 3), -1);
+  EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 1, 8), 9);
+  EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 3, 5), 8);
+  EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 10, 4), -1);
+}
+
+TEST(shortest_path, test_3) {
   SimpleNavigator::Graph graph;
   SimpleNavigator::GraphAlgorithms graph_algorithms;
   try {
     graph_algorithms.GetShortestPathBetweenVertices(graph, 1, 10);
   } catch (std::invalid_argument &e) {
     EXPECT_EQ("Sorry! There is no graph!", std::string(e.what()));
+  }
+}
+
+TEST(shortest_path, test_4) {
+  SimpleNavigator::Graph graph;
+  graph.LoadGraphFromFile("graph_examples/graph_10");
+  SimpleNavigator::GraphAlgorithms graph_algorithms;
+  try {
+    graph_algorithms.GetShortestPathBetweenVertices(graph, 1, 18);
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("Invalid start or end vertex!", std::string(e.what()));
   }
 }
 
@@ -134,6 +177,19 @@ TEST(shortest_path_between_all, test_2) {
   EXPECT_EQ(graph_algorithms.GetShortestPathsBetweenAllVertices(graph), result);
 }
 
+TEST(shortest_path_between_all, test_3) {
+  SimpleNavigator::Graph graph;
+  graph.LoadGraphFromFile("graph_examples/graph_10_o");
+  SimpleNavigator::GraphAlgorithms::AdjacencyMatrix result{
+      {0, 3, 4, 15, 10, 6, 3, 9, 6, 17}, {0, 0, 1, 12, 9, 5, 2, 8, 5, 16},
+      {0, 0, 0, 11, 8, 4, 1, 7, 4, 15},  {0, 0, 0, 0, 10, 6, 3, 9, 6, 17},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},    {0, 0, 0, 0, 4, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 7, 3, 0, 6, 3, 14},   {0, 0, 0, 0, 12, 8, 5, 0, 8, 19},
+      {0, 0, 0, 0, 15, 11, 8, 3, 0, 11}, {0, 0, 0, 0, 8, 4, 1, 7, 4, 0}};
+  SimpleNavigator::GraphAlgorithms graph_algorithms;
+  EXPECT_EQ(graph_algorithms.GetShortestPathsBetweenAllVertices(graph), result);
+}
+
 TEST(minimal_spanning_tree, test_1) {
   SimpleNavigator::Graph graph;
   SimpleNavigator::GraphAlgorithms graph_algorithms;
@@ -156,4 +212,16 @@ TEST(minimal_spanning_tree, test_2) {
 
   SimpleNavigator::GraphAlgorithms graph_algorithms;
   EXPECT_EQ(graph_algorithms.GetLeastSpanningTree(graph), result);
+}
+
+TEST(minimal_spanning_tree, test_3) {
+  SimpleNavigator::Graph graph;
+  graph.LoadGraphFromFile("graph_examples/graph_10_o");
+  SimpleNavigator::GraphAlgorithms graph_algorithms;
+  try {
+    graph_algorithms.GetLeastSpanningTree(graph);
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("Minimum spanning tree can't be found for a directed graph!",
+              std::string(e.what()));
+  }
 }
