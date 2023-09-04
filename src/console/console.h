@@ -15,6 +15,7 @@ class ConsoleApp {
  public:
   ConsoleApp() = default;
   ~ConsoleApp() = default;
+
   void ShowMenu() {
     int menu_number{};
     while (menu_number != kExit) {
@@ -110,12 +111,10 @@ class ConsoleApp {
   void DoSearch(std::function<int(const GraphAlgorithms&, const Graph& graph,
                                   int start_vertex, int end_vertex)>
                     f) const {
-    int start_vertex{};
-    int end_vertex{};
+    int start_vertex{}, end_vertex{};
     std::cout << "Enter the start and the end vertices: \n";
     if (std::cin >> start_vertex >> end_vertex) {
-      std::cout << graph_algo_.GetShortestPathBetweenVertices(
-          graph_, start_vertex, end_vertex);
+      std::cout << f(graph_algo_, graph_, start_vertex, end_vertex);
     } else {
       std::cout << "Incorrect input\n";
       std::cin.clear();
