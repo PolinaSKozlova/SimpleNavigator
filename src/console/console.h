@@ -17,7 +17,7 @@ class ConsoleApp {
   ~ConsoleApp() = default;
   void ShowMenu() {
     int menu_number{};
-    while (menu_number != 8) {
+    while (menu_number != kExit) {
       DisplayMenu();
       std::cin >> menu_number;
       DoAlgorithms(menu_number);
@@ -25,21 +25,22 @@ class ConsoleApp {
   }
 
  private:
+  const int kExit = 8;
+  const std::map<int, std::function<void()>> menu_options_{
+      {1, std::bind(&ConsoleApp::Option_1, this)},
+      {2, std::bind(&ConsoleApp::Option_2, this)},
+      {3, std::bind(&ConsoleApp::Option_3, this)},
+      {4, std::bind(&ConsoleApp::Option_4, this)},
+      {5, std::bind(&ConsoleApp::Option_5, this)},
+      {6, std::bind(&ConsoleApp::Option_6, this)}};
+
   void DoAlgorithms(const int menu_number) {
     std::system("clear");
-    std::map<int, std::function<void()>> menu_options;
-    menu_options[1] = std::bind(&ConsoleApp::Option_1, this);
-    menu_options[2] = std::bind(&ConsoleApp::Option_2, this);
-    menu_options[3] = std::bind(&ConsoleApp::Option_3, this);
-    menu_options[4] = std::bind(&ConsoleApp::Option_4, this);
-    menu_options[5] = std::bind(&ConsoleApp::Option_5, this);
-    menu_options[6] = std::bind(&ConsoleApp::Option_6, this);
-
     try {
-      auto it = menu_options.find(menu_number);
-      if (menu_number == 8) {
+      auto it = menu_options_.find(menu_number);
+      if (menu_number == kExit) {
         std::cout << "Bye\n";
-      } else if (it != menu_options.end()) {
+      } else if (it != menu_options_.end()) {
         it->second();
       } else {
         std::cout << "Invalid option\n";
