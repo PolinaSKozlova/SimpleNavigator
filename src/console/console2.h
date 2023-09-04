@@ -11,58 +11,14 @@
 #include "../graph_classes/s21_graph_algorithms.h"
 
 namespace SimpleNavigator {
-// class Menu {
-//  public:
-//   void DisplayMenu() {
-//     std::cout << "\nMenu:\n";
-//     std::cout << "1. Download graph from file\n";
-//     std::cout << "2. Breadth First Search\n";
-//     std::cout << "3. Depth First Search\n";
-//     std::cout << "4. Get Shortest Path Between Two Vertices\n";
-//     std::cout << "5. Get Shortest Path Between All Vertices\n";
-//     std::cout << "6. Get Least Spanning Tree\n";
-//     std::cout << "7. Solve Traveling Salesman Problem\n";
-//   }
-
-//   void Option_1(Graph& graph) {
-//     std::string file_name{};
-//     std::cin >> file_name;
-//     try {
-//       graph.LoadGraphFromFile(file_name);
-//       std::cout << "Graph loaded\n";
-//     } catch (std::invalid_argument& e) {
-//       std::cout << e.what() << std::endl;
-//     }
-//   }
-
-//   void Option_2(const Graph& graph, GraphAlgorithms& graph_algo) {
-//     int start_vertex{};
-//     std::cin >> start_vertex;
-//     graph_algo.BreadthFirstSearch(graph, start_vertex);
-//   }
-
-//   void Option_3(const Graph& graph, GraphAlgorithms& graph_algo) {
-//     int start_vertex{};
-//     std::cin >> start_vertex;
-//     graph_algo.DepthFirstSearch(graph, start_vertex);
-//   }
-// };
-
 class ConsoleApp {
  public:
   ConsoleApp() = default;
   ~ConsoleApp() = default;
   void ShowMenu() {
     int menu_number{};
-    while (menu_number != 'q') {
-      std::cout << "\nMenu:\n";
-      std::cout << "1. Download graph from file\n";
-      std::cout << "2. Breadth First Search\n";
-      std::cout << "3. Depth First Search\n";
-      std::cout << "4. Get Shortest Path Between Two Vertices\n";
-      std::cout << "5. Get Shortest Path Between All Vertices\n";
-      std::cout << "6. Get Least Spanning Tree\n";
-      std::cout << "7. Solve Traveling Salesman Problem\n";
+    while (menu_number != 8) {
+      DisplayMenu();
       std::cin >> menu_number;
       DoAlgorithms(menu_number);
     }
@@ -71,58 +27,80 @@ class ConsoleApp {
  private:
   void DoAlgorithms(const int menu_number) {
     std::system("clear");
-    int start_vertex{}, end_vertex{};
-    std::string file_name{};
-    auto load_file = std::bind(&Graph::LoadGraphFromFile, &graph_, file_name);
-    auto depth_search = std::bind(&GraphAlgorithms::DepthFirstSearch,
-                                  &graph_algo_, graph_, start_vertex);
-    auto breadth_search = std::bind(&GraphAlgorithms::BreadthFirstSearch,
-                                    &graph_algo_, start_vertex);
-    auto shortest_path_two_vertices =
-        std::bind(&GraphAlgorithms::GetShortestPathBetweenVertices,
-                  &graph_algo_, graph_, start_vertex, end_vertex);
-    auto shortest_path_all_vertices =
-        std::bind(&GraphAlgorithms::GetShortestPathsBetweenAllVertices,
-                  &graph_algo_, graph_);
-    auto least_spanning_tree =
-        std::bind(&GraphAlgorithms::GetLeastSpanningTree, &graph_algo_, graph_);
-    std::map<int, std::function<void()>> menu_options{
-        {1, load_file},
-        {2, breadth_search},
-        {3, depth_search},
-        {4, shortest_path_two_vertices},
-        {5, shortest_path_all_vertices},
-        {6, least_spanning_tree}};
-    // menu_options[1] = std::bind(&Menu::Option_1, &menu, graph_);
-    // menu_options[2] = std::bind(&Menu::Option_2, &menu, graph_, graph_algo_);
-    // menu_options[3] = std::bind(&Menu::Option_3, &menu, graph_, graph_algo_);
-    // menu_options[1] = std::bind(&Graph::LoadGraphFromFile, graph_,
-    // file_name);
-    // menu_options[2] = std::bind(&GraphAlgorithms::DepthFirstSearch,
-    // graph_algo_,
-    //                             graph_, start_vertex);
-    // menu_options[3] = std::bind(&GraphAlgorithms::BreadthFirstSearch,
-    //                             graph_algo_, graph_, start_vertex);
-    // menu_options[4] =
-    //     std::bind(&GraphAlgorithms::GetShortestPathBetweenVertices,
-    //     graph_algo_,
-    //               graph_, start_vertex, end_vertex);
-    // menu_options[5] =
-    //     std::bind(&GraphAlgorithms::GetShortestPathsBetweenAllVertices,
-    //               graph_algo_, graph_);
-    // menu_options[6] =
-    //     std::bind(&GraphAlgorithms::GetLeastSpanningTree, graph_algo_,
-    //     graph_);
+    std::map<int, std::function<void()>> menu_options;
+    menu_options[1] = std::bind(&ConsoleApp::Option_1, this);
+    menu_options[2] = std::bind(&ConsoleApp::Option_2, this);
+    menu_options[3] = std::bind(&ConsoleApp::Option_3, this);
+    menu_options[4] = std::bind(&ConsoleApp::Option_4, this);
+    menu_options[5] = std::bind(&ConsoleApp::Option_5, this);
+    menu_options[6] = std::bind(&ConsoleApp::Option_6, this);
 
-    auto it = menu_options.find(menu_number);
-    if (it != menu_options.end()) {
-      it->second();
-      graph_.print_graph();
-    } else if (menu_number == 'q') {
-      std::cout << "Bye\n";
-    } else {
-      std::cout << "Invalid option\n";
+    try {
+      auto it = menu_options.find(menu_number);
+      if (menu_number == 8) {
+        std::cout << "Bye\n";
+      } else if (it != menu_options.end()) {
+        it->second();
+      } else {
+        std::cout << "Invalid option\n";
+      }
+    } catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
     }
+  }
+
+  void DisplayMenu() {
+    std::cout << "\nMenu:\n";
+    std::cout << "1. Download graph from file\n";
+    std::cout << "2. Breadth First Search\n";
+    std::cout << "3. Depth First Search\n";
+    std::cout << "4. Get Shortest Path Between Two Vertices\n";
+    std::cout << "5. Get Shortest Path Between All Vertices\n";
+    std::cout << "6. Get Least Spanning Tree\n";
+    std::cout << "7. Solve Traveling Salesman Problem\n";
+    std::cout << "8. Exit\n";
+  }
+
+  void Option_1() {
+    std::string file_name{};
+    std::cin >> file_name;
+    try {
+      graph_.LoadGraphFromFile(file_name);
+      std::cout << "Graph loaded\n";
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
+  }
+
+  void Option_2() {
+    int start_vertex{};
+    std::cin >> start_vertex;
+    graph_algo_.PrintVector(
+        graph_algo_.BreadthFirstSearch(graph_, start_vertex));
+  }
+
+  void Option_3() {
+    int start_vertex{};
+    std::cin >> start_vertex;
+    graph_algo_.PrintVector(graph_algo_.DepthFirstSearch(graph_, start_vertex));
+  }
+
+  void Option_4() {
+    int start_vertex{};
+    int end_vertex{};
+    std::cout << "Enter the start and the end vertices: \n";
+    std::cin >> start_vertex >> end_vertex;
+    std::cout << graph_algo_.GetShortestPathBetweenVertices(
+        graph_, start_vertex, end_vertex);
+  }
+
+  void Option_5() {
+    graph_algo_.PrintMatrix(
+        graph_algo_.GetShortestPathsBetweenAllVertices(graph_));
+  }
+
+  void Option_6() {
+    graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
   }
 
   Graph graph_;
