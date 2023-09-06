@@ -1,8 +1,8 @@
 #include "s21_graph_algorithms.h"
 
-#include <queue>
+#include <algorithm>
+#include <limits>
 #include <set>
-#include <stack>
 
 namespace SimpleNavigator {
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
@@ -187,12 +187,32 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
 
 // TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
 //     const Graph& graph) const {
-//   return TsmResult();
+//   TsmResult result;
+//   return result;
 // }
 
 TsmResult GraphAlgorithms::SolveSalesmanProblemWithDynamicMethod(
     const Graph& graph) const {
-  return TsmResult();
+  if (graph.IsEmpty()) throw std::invalid_argument("You should load graph!");
+
+  std::vector<TsmResult> paths;
+  Graph::AdjacencyMatrix matrix = graph.GetGraphMatrix();
+  size_t matrix_size = graph.GetSize();
+
+  // Задаем начальное состояние для подзадачи с одной вершиной
+  paths[0].vertices.push_back(0);
+  // Заполняем таблицу динамического программирования
+
+  // Находим минимальный путь, проходя через все вершины
+  int minPath = std::numeric_limits<int>::max();
+  // result.distance = std::numeric_limits<int>::max();
+  // for (size_t i = 1; i < matrix_size; i++) {
+  //   minPath = std::min(minPath, matrix[i][0] + dp[(1 << matrix_size) -
+  //   1][i]);
+  // }
+
+  std::sort(paths.begin(), paths.end());
+  return paths[0];
 }
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
@@ -209,6 +229,14 @@ void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix m) const {
     }
     std::cout << std::endl;
   }
+}
+
+void GraphAlgorithms::PrintTsmResult(const TsmResult& result) const {
+  std::cout << "distance: " << result.distance << "\nbest path: ";
+  for (size_t i = 0; i < result.vertices.size() - 1; ++i) {
+    std::cout << result.vertices[i] << "->";
+  }
+  std::cout << result.vertices.back() << std::endl;
 }
 
 std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
