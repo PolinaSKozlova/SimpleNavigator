@@ -3,31 +3,45 @@
 namespace SimpleNavigator {
 
 void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
-  //   size_t size = graph.GetSize();
-  FillPheromonMatrix(graph.GetSize());
+  size_t size = graph.GetSize();
+  FillPheromonMatrix(size);
   FillDistanceMatrix(graph);
-  std::vector<std::vector<size_t>> paths;
-  // paths.resize(graph.GetSize(),std::vector<int>(graph.GetSize()));
+
+  std::set<TsmResult> solutions;
+  // paths.resize(size,std::vector<int>(size));
   size_t ant = 0;
-  size_t vertex = 0;
-  while (ant < graph.GetSize()) {
-    while (paths.size() < graph.GetSize()) {
-      std::vector<bool> visited(graph.GetSize(), false);
-      visited[vertex] = true;
+  std::pair<size_t, double> vertex_weight;
+  while (ant < size) {
+    MatrixDouble phero.resize(size, std::vector<double>(size));
+    vertex_weight = std::make_pair(0, 0.0);
+    while (vertex_weight.first < size) {
+      std::vector<bool> visited(size, false);
+      visited[vertex_weight.first] = true;
       std::vector<size_t> path;
       while (!AllVisited(visited)) {
-        path.push_back(vertex);
+        path.push_back(vertex_weight.first);
+        //  to do: pair watch again
         std::vector<std::pair<double, size_t>> desired_path =
-            GetDesireToVisit(visited, vertex);
-        vertex = FindNextVertex(desired_path);
-        visited[vertex] = true;
+            GetDesireToVisit(visited, vertex_weight);
+        auto tmp = vertex_weight.first;
+        vertex_weight.first = FindNextVertex(desired_path);
+        vertex_weight.second +=
+            graph.GetGraphMatrix()[tmp][vertex_weight.first];
+        visited[vertex_weight.first] = true;
       }
-      paths.push_back(path);
-      vertex++;
+      // возврат в начальную вершину
+      for (size_t i = 0; i < path.size() - 1; i++) {
+        phero[path[i]][path[i + 1]] = kQ / vertex_weight.second;
+      }
+      solutions.emplace(path, vertex_weight.second);
+      vertex_weight.second = 0.0;
+      ++vertex_weight.first;
     }
+    UpdatePheromonMatrix(phero);
+    phero.clear();
     // обновить феромоны
-    // обнулить матрицу путей
-    //?? вершина опять 1?
+
+    //?? вершина  1?
     ant++;
   }
 }
@@ -56,18 +70,16 @@ size_t AntAlgorithm::FindNextVertex(<std::pair<double, size_t>> &desired_path) {
   return next_vertex;
 }
 
-void AntAlgorithm::UpdatePheromonMatrix(
-    const std::vector<std::vector<size_t>> &paths) {
-  for (size_t i = 0; i < paths.size(); ++i) {
-    for (size_t j = 0; j < paths[i].size(); ++j) {
-      pheromon_matrix_[i][paths[i][j]] += kPheromons;
-    }
-  }
+void AntAlgorithm::UpdatePheromonMatrix(const MatrixDouble &phero) {
+  // for (size_t i = 0; i < paths.size(); ++i) {
+  //   for (size_t j = 0; j < paths[i].size(); ++j) {
+  //     pheromon_matrix_[i][paths[i][j]] += kPheromons;
+  //   }
+  // }
 }
 
 void AntAlgorithm::FillPheromonMatrix(size_t &size) {
-  pheromon_matrix_.resize(graph.GetSize(),
-                          std::vector<double>(graph.GetSize()));
+  pheromon_matrix_.resize(size, std::vector<double>(size));
   for (size_t i = 0; i < size; ++i) {
     for (size_t j = 0; j < size; ++j) {
       pheromon_matrix_[i][j] = kPheromons;
@@ -81,7 +93,7 @@ void AntAlgorithm::FillDistanceMatrix(const Graph &graph) {
 
   for (size_t i = 0; i < graph.GetSize(); ++i) {
     for (size_t j = 0; j < graph.GetSize(); ++j) {
-      distance_matrix_[i][j] = graph.GetGraphMatrix()[i][j] * kDistance;
+      distance_matrix_[i][j] = graph.GetGraphMatrix()[i][j] / kDistance;
     }
   }
 }
