@@ -190,6 +190,22 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
 //   return TsmResult();
 // }
 
+void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
+  for (size_t i = 0; i < vector.size() - 1; i++) {
+    std::cout << vector.at(i) << " -> ";
+  }
+  std::cout << vector.back() << std::endl;
+}
+
+void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix m) const {
+  for (size_t i = 0; i < m.size(); ++i) {
+    for (size_t j = 0; j < m[i].size(); ++j) {
+      std::cout << m[i][j] << " ";
+    }
+    std::cout << std::endl;
+  }
+}
+
 std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
                                                      int start_vertex) const {
   if (graph.IsEmpty()) {

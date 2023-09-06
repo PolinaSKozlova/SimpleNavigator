@@ -112,6 +112,7 @@ class ConsoleApp {
                                      int start_vertex)>
           f) const {
     int start_vertex{};
+    std::cout << "Enter the vertex: \n";
     if (std::cin >> start_vertex) {
       graph_algo_.PrintVector(f(graph_algo_, graph_, start_vertex));
     } else {
