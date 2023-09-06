@@ -12,6 +12,17 @@
 
 namespace SimpleNavigator {
 class ConsoleApp {
+  const int kExit = 9;
+  const std::map<int, std::function<void()>> menu_options_{
+      {1, std::bind(&ConsoleApp::Option_1, this)},
+      {2, std::bind(&ConsoleApp::Option_2, this)},
+      {3, std::bind(&ConsoleApp::Option_3, this)},
+      {4, std::bind(&ConsoleApp::Option_4, this)},
+      {5, std::bind(&ConsoleApp::Option_5, this)},
+      {6, std::bind(&ConsoleApp::Option_6, this)},
+      {7, std::bind(&ConsoleApp::Option_7, this)},
+      {8, std::bind(&ConsoleApp::Option_8, this)}};
+
  public:
   ConsoleApp() = default;
   ~ConsoleApp() = default;
@@ -26,16 +37,6 @@ class ConsoleApp {
   }
 
  private:
-  const int kExit = 8;
-  const std::map<int, std::function<void()>> menu_options_{
-      {1, std::bind(&ConsoleApp::Option_1, this)},
-      {2, std::bind(&ConsoleApp::Option_2, this)},
-      {3, std::bind(&ConsoleApp::Option_3, this)},
-      {4, std::bind(&ConsoleApp::Option_4, this)},
-      {5, std::bind(&ConsoleApp::Option_5, this)},
-      {6, std::bind(&ConsoleApp::Option_6, this)},
-      {7, std::bind(&ConsoleApp::Option_7, this)}};
-
   void DoAlgorithms(const int menu_number) {
     std::system("clear");
     try {
@@ -61,19 +62,14 @@ class ConsoleApp {
     std::cout << "5. Get Shortest Path Between All Vertices\n";
     std::cout << "6. Get Least Spanning Tree\n";
     std::cout << "7. Solve Traveling Salesman Problem\n";
-    std::cout << "8. Exit\n";
+    std::cout << "8. Export graph to dot/gv file\n";
+    std::cout << "9. Exit\n";
   }
 
   void Option_1() {
     std::cout << "Enter graph filename\n";
-    std::string file_name{};
-    std::cin >> file_name;
-    try {
-      graph_.LoadGraphFromFile(file_name);
-      std::cout << "Graph loaded\n";
-    } catch (std::invalid_argument& e) {
-      std::cout << e.what() << std::endl;
-    }
+    LoadOrExportGraph(&Graph::LoadGraphFromFile);
+    std::cout << "Graph loaded\n";
   }
 
   void Option_2() const { DoSearch(&GraphAlgorithms::BreadthFirstSearch); }
@@ -95,6 +91,16 @@ class ConsoleApp {
 
   void Option_7() const { std::cout << "SolveTravelingSalesmanProblem\n"; }
 
+  void Option_8() {
+    std::cout << "Enter filename to export\n";
+    try {
+      LoadOrExportGraph(&Graph::ExportGraphToDot);
+      std::cout << "Graph exported\n";
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
+  }
+
   void DoSearch(
       std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
                                      int start_vertex)>
@@ -115,6 +121,18 @@ class ConsoleApp {
     std::cout << "Enter the start and the end vertices: \n";
     if (std::cin >> start_vertex >> end_vertex) {
       std::cout << f(graph_algo_, graph_, start_vertex, end_vertex);
+    } else {
+      std::cout << "Incorrect input\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+  }
+
+  void LoadOrExportGraph(
+      std::function<void(Graph&, const std::string& filename)> f) {
+    std::string file_name{};
+    if (std::cin >> file_name) {
+      f(graph_, file_name);
     } else {
       std::cout << "Incorrect input\n";
       std::cin.clear();
