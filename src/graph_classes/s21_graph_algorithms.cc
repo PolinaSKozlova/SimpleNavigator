@@ -190,6 +190,11 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
 //   return TsmResult();
 // }
 
+TsmResult GraphAlgorithms::SolveSalesmanProblemWithDynamicMethod(
+    const Graph& graph) const {
+  return TsmResult();
+}
+
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   for (size_t i = 0; i < vector.size() - 1; i++) {
     std::cout << vector.at(i) << " -> ";

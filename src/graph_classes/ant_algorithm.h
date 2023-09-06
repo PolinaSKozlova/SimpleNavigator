@@ -6,10 +6,6 @@
 #include "s21_graph.h"
 
 namespace SimpleNavigator {
-struct TsmResult {
-  std::vector<int> vertices;
-  double distance;
-};
 
 class AntAlgorithm {
   using MatrixDouble = std::vector<std::vector<double>>;

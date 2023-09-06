@@ -29,6 +29,10 @@ class GraphAlgorithms {
   AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
 
+  // bonus part
+
+  TsmResult SolveSalesmanProblemWithDynamicMethod(const Graph& graph) const;
+
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
   void PrintMatrix(const AdjacencyMatrix m) const;
@@ -38,7 +42,6 @@ class GraphAlgorithms {
                        const std::vector<bool>& is_visited) const;
   bool AllVisited(const std::vector<bool> visited) const;
   bool IsOriented(const Graph& graph) const;
-  Graph graph_;
 };
 };  // namespace SimpleNavigator
 

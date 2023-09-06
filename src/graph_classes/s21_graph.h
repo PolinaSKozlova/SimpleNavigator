@@ -6,6 +6,11 @@
 #include <vector>
 
 namespace SimpleNavigator {
+struct TsmResult {
+  std::vector<int> vertices;
+  double distance;
+};
+
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
