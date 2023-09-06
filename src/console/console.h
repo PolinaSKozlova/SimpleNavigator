@@ -21,7 +21,8 @@ class ConsoleApp {
       {5, std::bind(&ConsoleApp::Option_5, this)},
       {6, std::bind(&ConsoleApp::Option_6, this)},
       {7, std::bind(&ConsoleApp::Option_7, this)},
-      {8, std::bind(&ConsoleApp::Option_8, this)}};
+      {8, std::bind(&ConsoleApp::Option_8, this)},
+      {9, std::bind(&ConsoleApp::Option_9, this)}};
 
  public:
   ConsoleApp() = default;
@@ -33,6 +34,7 @@ class ConsoleApp {
       DisplayMenu();
       std::cin >> menu_number;
       DoAlgorithms(menu_number);
+      ClearInput();
     }
   }
 
@@ -41,9 +43,7 @@ class ConsoleApp {
     std::system("clear");
     try {
       auto it = menu_options_.find(menu_number);
-      if (menu_number == kExit) {
-        std::cout << "Bye\n";
-      } else if (it != menu_options_.end()) {
+      if (it != menu_options_.end()) {
         it->second();
       } else {
         std::cout << "Invalid option\n";
@@ -68,8 +68,12 @@ class ConsoleApp {
 
   void Option_1() {
     std::cout << "Enter graph filename\n";
-    LoadOrExportGraph(&Graph::LoadGraphFromFile);
-    std::cout << "Graph loaded\n";
+    try {
+      LoadOrExportGraph(&Graph::LoadGraphFromFile);
+      std::cout << "Graph loaded\n";
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
   }
 
   void Option_2() const { DoSearch(&GraphAlgorithms::BreadthFirstSearch); }
@@ -101,6 +105,8 @@ class ConsoleApp {
     }
   }
 
+  void Option_9() { std::cout << "Bye\n"; }
+
   void DoSearch(
       std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
                                      int start_vertex)>
@@ -109,9 +115,8 @@ class ConsoleApp {
     if (std::cin >> start_vertex) {
       graph_algo_.PrintVector(f(graph_algo_, graph_, start_vertex));
     } else {
+      ClearInput();
       std::cout << "Incorrect input\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
   void DoSearch(std::function<int(const GraphAlgorithms&, const Graph& graph,
@@ -122,9 +127,8 @@ class ConsoleApp {
     if (std::cin >> start_vertex >> end_vertex) {
       std::cout << f(graph_algo_, graph_, start_vertex, end_vertex);
     } else {
+      ClearInput();
       std::cout << "Incorrect input\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
 
@@ -134,10 +138,13 @@ class ConsoleApp {
     if (std::cin >> file_name) {
       f(graph_, file_name);
     } else {
-      std::cout << "Incorrect input\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      ClearInput();
     }
+  }
+
+  void ClearInput() const {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
 
   Graph graph_;
