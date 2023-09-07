@@ -54,16 +54,19 @@ class ConsoleApp {
   }
 
   void DisplayMenu() {
-    std::cout << "\nMenu:\n";
-    std::cout << "1. Download graph from file\n";
-    std::cout << "2. Breadth First Search\n";
+    std::cout << "\n=================================================\n";
+    std::cout << "\n\tMenu:\n";
+    std::cout << "\n=================================================\n";
+    std::cout << "\t1. Download graph from file\n";
+    std::cout << "\t\t2. Breadth First Search\n";
     std::cout << "3. Depth First Search\n";
-    std::cout << "4. Get Shortest Path Between Two Vertices\n";
-    std::cout << "5. Get Shortest Path Between All Vertices\n";
-    std::cout << "6. Get Least Spanning Tree\n";
-    std::cout << "7. Solve Traveling Salesman Problem\n";
-    std::cout << "8. Export graph to dot/gv file\n";
-    std::cout << "9. Exit\n";
+    std::cout << "\t4. Get Shortest Path Between Two Vertices\n";
+    std::cout << "\t5. Get Shortest Path Between All Vertices\n";
+    std::cout << "\t6. Get Least Spanning Tree\n";
+    std::cout << "\t7. Solve Traveling Salesman Problem\n";
+    std::cout << "\t8. Export graph to dot/gv file\n";
+    std::cout << "\t9. Exit\n";
+    std::cout << "\n=================================================\n";
   }
 
   void Option_1() {
@@ -93,7 +96,15 @@ class ConsoleApp {
     graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
   }
 
-  void Option_7() const { std::cout << "SolveTravelingSalesmanProblem\n"; }
+  void Option_7() const {
+    std::cout << "SolveTravelingSalesmanProblem\n";
+    try {
+      graph_algo_.PrintTsmResult(
+          graph_algo_.SolveSalesmanProblemWithSimulatedAnnealingMethod(graph_));
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
+  }
 
   void Option_8() {
     std::cout << "Enter filename to export\n";
