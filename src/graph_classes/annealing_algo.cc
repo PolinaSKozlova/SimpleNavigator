@@ -42,6 +42,8 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
     }
   }
 
+  if (!result.distance)
+    throw std::invalid_argument("In loaded graph path doesn't find!");
   return result;
 }
 
