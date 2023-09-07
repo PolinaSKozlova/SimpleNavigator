@@ -31,7 +31,8 @@ class GraphAlgorithms {
 
   // bonus part
 
-  TsmResult SolveSalesmanProblemWithDynamicMethod(const Graph& graph) const;
+  TsmResult SolveSalesmanProblemWithSimulatedAnnealingMethod(
+      const Graph& graph) const;
 
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
@@ -43,7 +44,12 @@ class GraphAlgorithms {
                        const std::vector<bool>& is_visited) const;
   bool AllVisited(const std::vector<bool> visited) const;
   bool IsOriented(const Graph& graph) const;
+  double RandomNumber() const noexcept;
+  std::vector<int> GenerateSolution(const Graph& graph) const;
+  double CalculateCost(std::vector<int>& current_solution,
+                       const Graph& graph) const;
 };
+
 };  // namespace SimpleNavigator
 
 #endif  // SIMPLE_NAVIGATOR_GRAPH_ALGORITHMS_H

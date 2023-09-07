@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <random>
 #include <set>
 
 namespace SimpleNavigator {
@@ -10,7 +11,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
-  if (start_vertex < 1 || start_vertex > (int)graph.GetSize()) {
+  if (start_vertex < 1 || start_vertex > static_cast<int>(graph.GetSize())) {
     throw std::invalid_argument("Invalid start vertex!");
   }
   std::vector<int> visited;
@@ -43,8 +44,8 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
-  if (vertex1 < 1 || vertex1 > (int)graph.GetSize() || vertex2 < 1 ||
-      vertex2 > (int)graph.GetSize()) {
+  if (vertex1 < 1 || vertex1 > static_cast<int>(graph.GetSize()) ||
+      vertex2 < 1 || vertex2 > static_cast<int>(graph.GetSize())) {
     throw std::invalid_argument("Invalid start or end vertex!");
   }
   int num_vertices = graph.GetSize();
@@ -176,6 +177,27 @@ bool GraphAlgorithms::IsOriented(const Graph& graph) const {
   return false;
 }
 
+double GraphAlgorithms::RandomNumber() const noexcept {
+  std::default_random_engine generator(std::random_device{}());
+  std::uniform_real_distribution distribution(0.0, 1.0);
+  return distribution(generator);
+}
+
+// std::vector<int> GraphAlgorithms::GenerateSolution(const Graph& graph) const
+// {
+//   return std::vector<int>();
+// }
+
+double GraphAlgorithms::CalculateCost(std::vector<int>& current_solution,
+                                      const Graph& graph) const {
+  double distance{};
+  for (size_t k = 0; k < current_solution.size() - 1; ++k) {
+    distance += graph.GetGraphMatrix()[current_solution[k] - 1]
+                                      [current_solution[k + 1] - 1];
+  }
+  return distance;
+}
+
 bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
   for (size_t i = 0; i < visited.size(); i++) {
     if (!visited[i]) {
@@ -191,28 +213,45 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
 //   return result;
 // }
 
-TsmResult GraphAlgorithms::SolveSalesmanProblemWithDynamicMethod(
+TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
     const Graph& graph) const {
   if (graph.IsEmpty()) throw std::invalid_argument("You should load graph!");
+  // const double kInitialTemperature = 1000.0;
+  // const double kCoolingRate = 0.99;
+  // const int kNumIterations = 1000;
 
-  std::vector<TsmResult> paths;
-  Graph::AdjacencyMatrix matrix = graph.GetGraphMatrix();
-  size_t matrix_size = graph.GetSize();
+  std::vector<int> current_solution{3, 4, 2, 1, 3};
+  std::cout << "distance " << CalculateCost(current_solution, graph);
 
-  // Задаем начальное состояние для подзадачи с одной вершиной
-  paths[0].vertices.push_back(0);
-  // Заполняем таблицу динамического программирования
+  TsmResult result;
+  // std::vector<int> current_solution = GenerateSolution(graph);
+  // double current_cost = CalculateCost(current_solution, graph);
 
-  // Находим минимальный путь, проходя через все вершины
-  int minPath = std::numeric_limits<int>::max();
-  // result.distance = std::numeric_limits<int>::max();
-  // for (size_t i = 1; i < matrix_size; i++) {
-  //   minPath = std::min(minPath, matrix[i][0] + dp[(1 << matrix_size) -
-  //   1][i]);
+  // result.vertices = current_solution;
+  // result.distance = current_cost;
+
+  // double temperature = kInitialTemperature;
+
+  // for (int i = 0; i < kNumIterations; i++) {
+  //   std::vector<int> neighbor_solution = GenerateSolution(graph);
+  //   double new_cost = CalculateCost(neighbor_solution, graph);
+
+  //   double delta = new_cost - current_cost;
+
+  //   if (delta < 0 && std::exp(-delta / temperature) > RandomNumber()) {
+  //     current_solution = neighbor_solution;
+  //     current_cost = new_cost;
+  //   }
+
+  //   if (current_cost < result.distance) {
+  //     result.vertices = current_solution;
+  //     result.distance = current_cost;
+  //   }
+
+  //   temperature *= kCoolingRate;
   // }
 
-  std::sort(paths.begin(), paths.end());
-  return paths[0];
+  return result;
 }
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
@@ -244,7 +283,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
-  if (start_vertex < 1 || start_vertex > (int)graph.GetSize()) {
+  if (start_vertex < 1 || start_vertex > static_cast<int>(graph.GetSize())) {
     throw std::invalid_argument("Invalid start vertex!");
   }
   std::vector<int> visited;
