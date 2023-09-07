@@ -20,7 +20,7 @@ struct TsmResult {
     for (auto it : vertices) {
       std::cout << it + 1 << "->";
     }
-    std::cout << vertices.front() + 1 << "\n";
+    std::cout << "\n";
     std::cout << "distance " << distance << "\n";
   }
 

@@ -90,7 +90,7 @@ void Graph::ReadElementsFromAdjacencyMatrix(const std::string& line,
 }
 
 bool Graph::CheckFilename(const std::string& filename) const noexcept {
-  if (std::regex_match(filename, std::regex("[A-Za-z\\d]*.(dot|gv)"))) {
+  if (std::regex_match(filename, std::regex("[A-Za-z_\\d]*.(dot|gv)"))) {
     return true;
   } else {
     return false;
