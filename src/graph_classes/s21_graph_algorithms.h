@@ -6,6 +6,7 @@
 
 #include "../containers/s21_queue.h"
 #include "../containers/s21_stack.h"
+#include "annealing_algo.h"
 #include "ant_algorithm.h"
 #include "s21_graph.h"
 
@@ -44,11 +45,6 @@ class GraphAlgorithms {
                        const std::vector<bool>& is_visited) const;
   bool AllVisited(const std::vector<bool> visited) const;
   bool IsOriented(const Graph& graph) const;
-  double RandomNumber() const noexcept;
-  std::vector<int> GenerateRandomSolution(const Graph& graph) const;
-  std::vector<int> GenerateNextSolution(const Graph& graph) const;
-  double CalculateCost(std::vector<int>& current_solution,
-                       const Graph& graph) const;
 };
 
 };  // namespace SimpleNavigator

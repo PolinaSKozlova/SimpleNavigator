@@ -177,32 +177,6 @@ bool GraphAlgorithms::IsOriented(const Graph& graph) const {
   return false;
 }
 
-double GraphAlgorithms::RandomNumber() const noexcept {
-  std::default_random_engine generator(std::random_device{}());
-  std::uniform_real_distribution distribution(0.0, 1.0);
-  return distribution(generator);
-}
-
-std::vector<int> GraphAlgorithms::GenerateRandomSolution(
-    const Graph& graph) const {
-  return std::vector<int>();
-}
-
-// std::vector<int> GraphAlgorithms::GenerateNextSolution(
-//     const Graph& graph) const {
-//   return std::vector<int>();
-// }
-
-double GraphAlgorithms::CalculateCost(std::vector<int>& current_solution,
-                                      const Graph& graph) const {
-  double distance{};
-  for (size_t k = 0; k < current_solution.size() - 1; ++k) {
-    distance += graph.GetGraphMatrix()[current_solution[k] - 1]
-                                      [current_solution[k + 1] - 1];
-  }
-  return distance;
-}
-
 bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
   for (size_t i = 0; i < visited.size(); i++) {
     if (!visited[i]) {
@@ -220,43 +194,8 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
 
 TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
     const Graph& graph) const {
-  if (graph.IsEmpty()) throw std::invalid_argument("You should load graph!");
-  // const double kInitialTemperature = 1000.0;
-  // const double kCoolingRate = 0.99;
-  // const int kNumIterations = 1000;
-
-  std::vector<int> current_solution{3, 4, 2, 1, 3};
-  std::cout << "distance " << CalculateCost(current_solution, graph);
-
-  TsmResult result;
-  // std::vector<int> current_solution = GenerateSolution(graph);
-  // double current_cost = CalculateCost(current_solution, graph);
-
-  // result.vertices = current_solution;
-  // result.distance = current_cost;
-
-  // double temperature = kInitialTemperature;
-
-  // for (int i = 0; i < kNumIterations; i++) {
-  //   std::vector<int> neighbor_solution = GenerateSolution(graph);
-  //   double new_cost = CalculateCost(neighbor_solution, graph);
-
-  //   double delta = new_cost - current_cost;
-
-  //   if (delta < 0 && std::exp(-delta / temperature) > RandomNumber()) {
-  //     current_solution = neighbor_solution;
-  //     current_cost = new_cost;
-  //   }
-
-  //   if (current_cost < result.distance) {
-  //     result.vertices = current_solution;
-  //     result.distance = current_cost;
-  //   }
-
-  //   temperature *= kCoolingRate;
-  // }
-
-  return result;
+  AnnealingAlgorithms solution;
+  return solution.SolveSailsmanProblem(graph);
 }
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
