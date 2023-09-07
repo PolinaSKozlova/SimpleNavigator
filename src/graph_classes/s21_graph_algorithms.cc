@@ -183,8 +183,13 @@ double GraphAlgorithms::RandomNumber() const noexcept {
   return distribution(generator);
 }
 
-// std::vector<int> GraphAlgorithms::GenerateSolution(const Graph& graph) const
-// {
+std::vector<int> GraphAlgorithms::GenerateRandomSolution(
+    const Graph& graph) const {
+  return std::vector<int>();
+}
+
+// std::vector<int> GraphAlgorithms::GenerateNextSolution(
+//     const Graph& graph) const {
 //   return std::vector<int>();
 // }
 

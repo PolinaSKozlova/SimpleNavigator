@@ -7,6 +7,15 @@
 
 namespace SimpleNavigator {
 struct TsmResult {
+  TsmResult() = default;
+  TsmResult(const TsmResult& other) { *this = other; };
+  ~TsmResult() = default;
+
+  void operator=(const TsmResult& other) {
+    vertices = other.vertices;
+    distance = other.distance;
+  };
+
   std::vector<int> vertices;
   double distance;
 };
