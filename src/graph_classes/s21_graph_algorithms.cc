@@ -185,10 +185,24 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
   return true;
 }
 
-// TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
-//     const Graph& graph) const {
-//   return TsmResult();
-// }
+TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph& graph) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
+  AntAlgorithm ant;
+  ant.RunAntAlgoritm(graph);
+
+  TsmResult solution;
+  solution.vertices = ant.GetSolution().vertices;
+  solution.distance = ant.GetSolution().distance;
+  std::cout << solution.distance << std::endl;
+  for (size_t i = 0; i < solution.vertices.size(); i++) {
+    std::cout << solution.vertices[i] << " ";
+  }
+  // std::cout << solution.path << std::endl;
+  return solution;
+}
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   for (size_t i = 0; i < vector.size() - 1; i++) {
@@ -235,4 +249,5 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   }
   return visited;
 }
+
 };  // namespace SimpleNavigator

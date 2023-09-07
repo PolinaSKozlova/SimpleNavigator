@@ -9,17 +9,8 @@
 #include "s21_graph.h"
 
 namespace SimpleNavigator {
-struct TsmResult {
-  std::vector<int> vertices;
-  double distance;
-
-  bool operator<(const TsmResult &o) const { return distance < o.distance; }
-
-  bool operator>(const TsmResult &o) const { return distance > o.distance; }
-};
 
 class AntAlgorithm {
-  using MatrixDouble = std::vector<std::vector<double>>;
   const int kAlpha = 1;
   const int kBeta = 2;
   const double kQ = 4.0;  // количество вершин
@@ -31,15 +22,18 @@ class AntAlgorithm {
   AntAlgorithm() = default;
   ~AntAlgorithm() = default;
   void RunAntAlgoritm(const Graph &graph);
+  TsmResult GetSolution() { return solution_; }
+  using MatrixDouble = std::vector<std::vector<double>>;
+  using WeightToVertex = std::pair<double, int>;
 
  private:
   bool AllVisited(const std::vector<bool> visited) const;
-  size_t FindNextVertex(<std::pair<double, size_t>> &desired_path);
-  void FillPheromonMatrix(size_t &size);
+  int FindNextVertex(std::vector<WeightToVertex> &desired_path);
+  void FillPheromonMatrix(int size);
   void UpdatePheromonMatrix(const MatrixDouble &phero);
   void FillDistanceMatrix(const Graph &graph);
-  std::vector<std::pair<double, size_t>> GetDesireToVisit(
-      std::vector<bool> &visited, size_t &vertex);
+  std::vector<WeightToVertex> GetDesireToVisit(std::vector<bool> &visited,
+                                               int vertex);
   MatrixDouble pheromon_matrix_;
   MatrixDouble distance_matrix_;
   TsmResult solution_;

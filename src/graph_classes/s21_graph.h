@@ -6,6 +6,22 @@
 #include <vector>
 
 namespace SimpleNavigator {
+struct TsmResult {
+  std::vector<int> vertices;
+  double distance;
+
+  TsmResult() = default;
+  TsmResult(std::vector<int> other, double d) : vertices(other), distance(d) {}
+  TsmResult(const TsmResult& o) : vertices(o.vertices), distance(o.distance) {}
+  void operator=(const TsmResult& o) {
+    vertices = o.vertices;
+    distance = o.distance;
+  }
+
+  bool operator<(const TsmResult& o) const { return distance < o.distance; }
+
+  bool operator>(const TsmResult& o) const { return distance > o.distance; }
+};
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
