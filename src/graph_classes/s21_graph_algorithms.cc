@@ -200,7 +200,7 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   for (size_t i = 0; i < solution.vertices.size(); i++) {
     std::cout << solution.vertices[i] << " ";
   }
-  // std::cout << solution.path << std::endl;
+
   return solution;
 }
 

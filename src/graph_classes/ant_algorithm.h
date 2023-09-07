@@ -11,7 +11,7 @@
 namespace SimpleNavigator {
 
 class AntAlgorithm {
-  const int kAlpha = 1;
+  const int kAlpha = 2;
   const int kBeta = 2;
   const double kQ = 4.0;  // количество вершин
   const double kEvaporation = 0.1;
@@ -34,6 +34,7 @@ class AntAlgorithm {
   void FillDistanceMatrix(const Graph &graph);
   std::vector<WeightToVertex> GetDesireToVisit(std::vector<bool> &visited,
                                                int vertex);
+
   MatrixDouble pheromon_matrix_;
   MatrixDouble distance_matrix_;
   TsmResult solution_;

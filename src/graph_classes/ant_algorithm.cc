@@ -12,50 +12,53 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
   FillDistanceMatrix(graph);
 
   std::set<TsmResult> solutions;
-  // paths.resize(size,std::vector<int>(size));
+  std::vector<int> path;
   int ant = 0;
-  WeightToVertex vertex_weight = std::make_pair(0.0, 0);
+
   while (ant < size) {
     MatrixDouble phero;
+    int started_here = 0;
+    WeightToVertex vertex_weight = std::make_pair(0.0, started_here);
     phero.resize(size, std::vector<double>(size));
     while (vertex_weight.second < size) {
+      path.resize(0);
       std::vector<bool> visited(size, false);
       visited[vertex_weight.second] = true;
-      int started_here = vertex_weight.second;
-      std::vector<int> path;
+
+      started_here = vertex_weight.second;
+      path.push_back(vertex_weight.second);
       while (!AllVisited(visited)) {
-        std::cout << ant << " ant is going to  vertex: " << vertex_weight.second
-                  << std::endl;
-        path.push_back(vertex_weight.second);
         std::vector<WeightToVertex> desired_path =
             GetDesireToVisit(visited, vertex_weight.second);
+
         auto tmp = vertex_weight.second;
         vertex_weight.second = FindNextVertex(desired_path);
+        if (vertex_weight.second == -1) {
+          throw std::invalid_argument("Sorry! There is no path!");
+          // return;
+        }
         vertex_weight.first +=
             graph.GetGraphMatrix()[tmp][vertex_weight.second];
+        path.push_back(vertex_weight.second);
         visited[vertex_weight.second] = true;
       }
       path.push_back(started_here);
       vertex_weight.first +=
           graph.GetGraphMatrix()[vertex_weight.second][started_here];
-
+      vertex_weight.second = started_here;
       for (size_t i = 0; i < path.size() - 1; i++) {
         phero[path[i]][path[i + 1]] = kQ / vertex_weight.first;
       }
+
       solutions.emplace(path, vertex_weight.first);
       vertex_weight.first = 0.0;
       vertex_weight.second += 1;
     }
     UpdatePheromonMatrix(phero);
     phero.clear();
-    std::cout << ant << " ant finish: " << std::endl;
     ant++;
   }
 
-  std::cout << solutions.size() << std::endl;
-  // for (auto it = solutions.begin(); it != solutions.end(); ++it) {
-  //   std::cout << it->first.data() << " " << it->second.data() << std::endl;
-  // }
   solution_ = *solutions.begin();
 }
 
@@ -74,13 +77,14 @@ int AntAlgorithm::FindNextVertex(
   std::default_random_engine generator(seed);
   std::uniform_real_distribution<double> distribution(0.0, 1.0);
   auto generated = distribution(generator);
-  int next_vertex;
+  int next_vertex = -1;
   for (size_t i = 0; i < desired_path.size(); ++i) {
     if (generated < desired_path[i].first &&
         generated > desired_path[i + 1].first) {
       next_vertex = desired_path[i].second;
     }
   }
+
   return next_vertex;
 }
 
@@ -120,8 +124,10 @@ std::vector<AntAlgorithm::WeightToVertex> AntAlgorithm::GetDesireToVisit(
   result.resize(visited.size());
   double all_desire = 0.0;
   for (size_t i = 0; i < visited.size(); ++i) {
-    all_desire += std::pow(pheromon_matrix_[vertex][i], kAlpha) *
-                  std::pow(distance_matrix_[vertex][i], kBeta);
+    if (!visited[i]) {
+      all_desire += std::pow(pheromon_matrix_[vertex][i], kAlpha) *
+                    std::pow(distance_matrix_[vertex][i], kBeta);
+    }
   }
 
   for (size_t i = 0; i < visited.size(); ++i) {
@@ -132,10 +138,11 @@ std::vector<AntAlgorithm::WeightToVertex> AntAlgorithm::GetDesireToVisit(
       result[i].second = i;
     }
   }
+
   std::sort(result.begin(), result.end());
-  for (size_t i = 0; i < result.size(); ++i) {
-    std::cout << " in GETDESIRETOVISIT" << result[i].first << " "
-              << result[i].second << std::endl;
+
+  for (size_t i = result.size() - 2; i > 0; --i) {
+    result.at(i).first = result.at(i).first + result.at(i + 1).first;
   }
 
   return result;
