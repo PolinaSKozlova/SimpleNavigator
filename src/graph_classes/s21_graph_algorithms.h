@@ -6,7 +6,7 @@
 
 #include "../containers/s21_queue.h"
 #include "../containers/s21_stack.h"
-#include "annealing_algo.h"
+#include "annealing_algorithm.h"
 #include "ant_algorithm.h"
 #include "s21_graph.h"
 
