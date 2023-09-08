@@ -16,12 +16,13 @@ struct TsmResult {
     distance = other.distance;
   };
 
-  void printTsmResult() const {
-    for (auto it : vertices) {
-      std::cout << it + 1 << "->";
+  void PrintTsmResult() const {
+    std::cout << "shortest path: ";
+    for (size_t i = 0; i < vertices.size() - 1; ++i) {
+      std::cout << vertices[i] << "->";
     }
-    std::cout << "\n";
-    std::cout << "distance " << distance << "\n";
+    std::cout << vertices.back();
+    std::cout << "\ndistance: " << distance << "\n";
   }
 
   std::vector<int> vertices;

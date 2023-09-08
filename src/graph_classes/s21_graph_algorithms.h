@@ -38,7 +38,6 @@ class GraphAlgorithms {
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
   void PrintMatrix(const AdjacencyMatrix m) const;
-  void PrintTsmResult(const TsmResult& result) const;
 
  private:
   int GetClosestVertex(const std::vector<int>& distances,

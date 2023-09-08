@@ -214,14 +214,6 @@ void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix m) const {
   }
 }
 
-void GraphAlgorithms::PrintTsmResult(const TsmResult& result) const {
-  std::cout << "distance: " << result.distance << "\nbest path: ";
-  for (size_t i = 0; i < result.vertices.size() - 1; ++i) {
-    std::cout << result.vertices[i] << "->";
-  }
-  std::cout << result.vertices.back() << std::endl;
-}
-
 std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
                                                      int start_vertex) const {
   if (graph.IsEmpty()) {
