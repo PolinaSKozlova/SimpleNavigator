@@ -177,7 +177,7 @@ bool GraphAlgorithms::IsOriented(const Graph& graph) const {
   return false;
 }
 
-bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
+bool GraphAlgorithms::AllVisited(const std::vector<bool>& visited) const {
   for (size_t i = 0; i < visited.size(); i++) {
     if (!visited[i]) {
       return false;
@@ -223,7 +223,7 @@ void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   std::cout << vector.back() << std::endl;
 }
 
-void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix m) const {
+void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix& m) const {
   for (size_t i = 0; i < m.size(); ++i) {
     for (size_t j = 0; j < m[i].size(); ++j) {
       std::cout << m[i][j] << " ";

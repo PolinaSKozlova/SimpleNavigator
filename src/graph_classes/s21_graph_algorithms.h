@@ -37,12 +37,12 @@ class GraphAlgorithms {
 
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
-  void PrintMatrix(const AdjacencyMatrix m) const;
+  void PrintMatrix(const AdjacencyMatrix& m) const;
 
  private:
   int GetClosestVertex(const std::vector<int>& distances,
                        const std::vector<bool>& is_visited) const;
-  bool AllVisited(const std::vector<bool> visited) const;
+  bool AllVisited(const std::vector<bool>& visited) const;
   bool IsOriented(const Graph& graph) const;
   void NormalizeVertexNumeration(std::vector<int>& vertices) const;
   Graph graph_;

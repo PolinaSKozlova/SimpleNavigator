@@ -27,8 +27,8 @@ class AntAlgorithm {
   using WeightToVertex = std::pair<double, int>;
 
  private:
-  bool AllVisited(const std::vector<bool> visited) const;
-  int FindNextVertex(std::vector<WeightToVertex> &desired_path);
+  bool AllVisited(const std::vector<bool> &visited) const;
+  int FindNextVertex(const std::vector<WeightToVertex> &desired_path);
   void FillPheromonMatrix(int size);
   void UpdatePheromonMatrix(const MatrixDouble &phero);
   void FillDistanceMatrix(const Graph &graph);

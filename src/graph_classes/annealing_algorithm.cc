@@ -76,8 +76,8 @@ std::vector<int> AnnealingAlgorithms::GenerateNextSolution(
   return path;
 }
 
-double AnnealingAlgorithms::CalculateCost(std::vector<int>& current_solution,
-                                          const Graph& graph) const {
+double AnnealingAlgorithms::CalculateCost(
+    const std::vector<int>& current_solution, const Graph& graph) const {
   double distance{0};
   for (size_t k = 0; k < current_solution.size() - 1; ++k) {
     if (graph.GetGraphMatrix()[current_solution[k]][current_solution[k + 1]] ==

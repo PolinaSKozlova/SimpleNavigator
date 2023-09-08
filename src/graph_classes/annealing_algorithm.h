@@ -22,7 +22,7 @@ class AnnealingAlgorithms {
   int RandomVertex(int max_value) const noexcept;
   std::vector<int> GenerateRandomSolution(const size_t size) const;
   std::vector<int> GenerateNextSolution(std::vector<int>& path) const;
-  double CalculateCost(std::vector<int>& current_solution,
+  double CalculateCost(const std::vector<int>& current_solution,
                        const Graph& graph) const;
 };
 

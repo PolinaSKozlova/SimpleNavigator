@@ -8,7 +8,7 @@
 namespace SimpleNavigator {
 struct TsmResult {
   TsmResult() = default;
-  TsmResult(std::vector<int> other, double d) : vertices(other), distance(d) {}
+  TsmResult(std::vector<int>& other, double d) : vertices(other), distance(d) {}
   TsmResult(const TsmResult& other) { *this = other; };
   ~TsmResult() = default;
 

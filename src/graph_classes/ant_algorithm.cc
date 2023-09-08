@@ -73,10 +73,10 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
     ant++;
   }
 
-  solution_ = *solutions.begin();
+  if (!solutions.empty()) solution_ = *solutions.begin();
 }
 
-bool AntAlgorithm::AllVisited(const std::vector<bool> visited) const {
+bool AntAlgorithm::AllVisited(const std::vector<bool> &visited) const {
   for (size_t i = 0; i < visited.size(); i++) {
     if (!visited[i]) {
       return false;
@@ -86,7 +86,7 @@ bool AntAlgorithm::AllVisited(const std::vector<bool> visited) const {
 }
 
 int AntAlgorithm::FindNextVertex(
-    std::vector<AntAlgorithm::WeightToVertex> &desired_path) {
+    const std::vector<AntAlgorithm::WeightToVertex> &desired_path) {
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine generator(seed);
   std::uniform_real_distribution<double> distribution(0.0, 1.0);
