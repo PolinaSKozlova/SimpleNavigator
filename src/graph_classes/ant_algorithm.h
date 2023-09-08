@@ -11,11 +11,11 @@
 namespace SimpleNavigator {
 
 class AntAlgorithm {
-  const int kAlpha = 2;
-  const int kBeta = 2;
-  const double kQ = 4.0;  // количество вершин
+  const int kAlpha = 3;
+  const int kBeta = 3;
+  const double kQ = 3;
   const double kEvaporation = 0.1;
-  const double kPheromons = 0.1;
+  const double kPheromons = 0.2;
   const double kDistance = 10;
 
  public:
