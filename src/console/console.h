@@ -7,6 +7,8 @@
 #include <map>
 #include <string>
 
+#include "../graph_classes/annealing_algorithm.h"
+#include "../graph_classes/ant_algorithm.h"
 #include "../graph_classes/s21_graph.h"
 #include "../graph_classes/s21_graph_algorithms.h"
 
@@ -26,7 +28,12 @@ class ConsoleApp {
 
  public:
   ConsoleApp() = default;
+  ConsoleApp(const ConsoleApp&) = delete;
+  ConsoleApp(const ConsoleApp&&) = delete;
   ~ConsoleApp() = default;
+
+  void operator=(const ConsoleApp&) = delete;
+  void operator=(const ConsoleApp&&) = delete;
 
   void ShowMenu() {
     int menu_number{};
@@ -58,8 +65,8 @@ class ConsoleApp {
     std::cout << "\n\tMenu:\n";
     std::cout << "\n=================================================\n";
     std::cout << "\t1. Download graph from file\n";
-    std::cout << "\t\t2. Breadth First Search\n";
-    std::cout << "3. Depth First Search\n";
+    std::cout << "\t2. Breadth First Search\n";
+    std::cout << "\t3. Depth First Search\n";
     std::cout << "\t4. Get Shortest Path Between Two Vertices\n";
     std::cout << "\t5. Get Shortest Path Between All Vertices\n";
     std::cout << "\t6. Get Least Spanning Tree\n";
