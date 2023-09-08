@@ -1,6 +1,7 @@
 #ifndef SIMPLE_NAVIGATOR_CONSOLE_H
 #define SIMPLE_NAVIGATOR_CONSOLE_H
 
+#include <chrono>
 #include <cstdlib>
 #include <functional>
 #include <iostream>
@@ -61,9 +62,9 @@ class ConsoleApp {
   }
 
   void DisplayMenu() {
-    std::cout << "\n=================================================\n";
+    std::cout << "\n========================================================\n";
     std::cout << "\n\tMenu:\n";
-    std::cout << "\n=================================================\n";
+    std::cout << "\n========================================================\n";
     std::cout << "\t1. Download graph from file\n";
     std::cout << "\t2. Breadth First Search\n";
     std::cout << "\t3. Depth First Search\n";
@@ -73,7 +74,7 @@ class ConsoleApp {
     std::cout << "\t7. Solve Traveling Salesman Problem\n";
     std::cout << "\t8. Export graph to dot/gv file\n";
     std::cout << "\t9. Exit\n";
-    std::cout << "\n=================================================\n";
+    std::cout << "\n========================================================\n";
   }
 
   void Option_1() {
@@ -106,8 +107,18 @@ class ConsoleApp {
   void Option_7() const {
     std::cout << "SolveTravelingSalesmanProblem\n";
     try {
-      graph_algo_.PrintTsmResult(
-          graph_algo_.SolveSalesmanProblemWithSimulatedAnnealingMethod(graph_));
+      double time{};
+      // std::cout << "Ant Method:\n";
+      // time = StartTimer(&GraphAlgorithms::SolveTravelingSalesmanProblem);
+      // std::cout << "time: " << time << "\n";
+      std::cout << "Simulated Annealing Method:\n";
+      time = StartTimer(
+          &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);
+      std::cout << "time: " << time << "\n";
+      // std::cout << "Dynamic Programming Method:\n";
+      // time = StartTimer(
+      //     &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);
+      //  std::cout << "time: " << time << "\n";
     } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
     }
@@ -159,6 +170,16 @@ class ConsoleApp {
     } else {
       ClearInput();
     }
+  }
+
+  double StartTimer(
+      std::function<TsmResult(const GraphAlgorithms&, const Graph& graph)> f)
+      const {
+    const auto start{std::chrono::system_clock::now()};
+    f(graph_algo_, graph_).PrintTsmResult();
+
+    const auto finish{std::chrono::system_clock::now()};
+    return std::chrono::duration<double>(finish - start).count();
   }
 
   void ClearInput() const {
