@@ -18,7 +18,7 @@ class stack {
       push(element);
     }
   }
-  stack(const stack &s) { list = s.list; }
+  stack(const stack &s) : list(s.list) {}
   stack(stack &&s) { swap(s); }
   ~stack() { list.clear(); }
   stack &operator=(const stack &s) {

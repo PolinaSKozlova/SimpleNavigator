@@ -10,15 +10,16 @@ REPORT_DIR = report
 GRAPH = s21_graph
 GRAPH_ALGO = s21_graph_algorithms
 
-run: clean
-	clear
-	$(CC) $(CC_FLAGS) graph_classes/*.cc run.cc -o run -g
-	./run
 
-all:
+all: app
+
+app: clean
+	$(CC) $(CC_FLAGS) graph_classes/*.cc console_app.cc -o console_app -g
+	rm -rf console_app.dSYM & clear
+	./console_app
 
 clean:
-	rm -rf *.o *.gcno *.gcda *.info *.a $(REPORT_DIR) g_tests run *.dSYM *.dot *.gv
+	rm -rf *.o *.gcno *.gcda *.info *.a $(REPORT_DIR) g_tests run *.dSYM *.dot *.gv console_app
 
 test: 
 	clear
@@ -65,7 +66,7 @@ clang:
 	clang-format -n --style=Google graph_classes/*.cc graph_classes/*.h
 
 cppcheck:
-	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h
+	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h console/console.h
 
-# push:
-# 	git push origin graph_branch
+push:
+	git push origin bonus_part

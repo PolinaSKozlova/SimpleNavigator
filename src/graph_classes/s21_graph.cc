@@ -7,8 +7,6 @@
 #include <sstream>
 
 namespace SimpleNavigator {
-Graph::Graph(size_t size) : size_(size) { AllocateMemoryForGraphMatrix(); }
-
 void Graph::LoadGraphFromFile(const std::string& filename) {
   std::ifstream file_to_read;
   std::string line;
@@ -92,7 +90,7 @@ void Graph::ReadElementsFromAdjacencyMatrix(const std::string& line,
 }
 
 bool Graph::CheckFilename(const std::string& filename) const noexcept {
-  if (std::regex_match(filename, std::regex("[A-Za-z\\d]*.(dot|gv)"))) {
+  if (std::regex_match(filename, std::regex("[A-Za-z_\\d]*.(dot|gv)"))) {
     return true;
   } else {
     return false;

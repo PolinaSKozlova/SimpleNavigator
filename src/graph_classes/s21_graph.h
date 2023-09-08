@@ -7,27 +7,37 @@
 
 namespace SimpleNavigator {
 struct TsmResult {
-  std::vector<int> vertices;
-  double distance;
-
   TsmResult() = default;
-  TsmResult(std::vector<int> other, double d) : vertices(other), distance(d) {}
-  TsmResult(const TsmResult& o) : vertices(o.vertices), distance(o.distance) {}
-  void operator=(const TsmResult& o) {
-    vertices = o.vertices;
-    distance = o.distance;
-  }
+  TsmResult(std::vector<int>& other, double d) : vertices(other), distance(d) {}
+  TsmResult(const TsmResult& other) { *this = other; };
+  ~TsmResult() = default;
+
+  void operator=(const TsmResult& other) {
+    vertices = other.vertices;
+    distance = other.distance;
+  };
 
   bool operator<(const TsmResult& o) const { return distance < o.distance; }
 
   bool operator>(const TsmResult& o) const { return distance > o.distance; }
+
+  void PrintTsmResult() const {
+    std::cout << "shortest path: ";
+    for (size_t i = 0; i < vertices.size() - 1; ++i) {
+      std::cout << vertices[i] << "->";
+    }
+    std::cout << vertices.back();
+    std::cout << "\ndistance: " << distance << "\n";
+  }
+
+  std::vector<int> vertices;
+  double distance;
 };
+
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
-  // подумать какие констуркторы нужны
   Graph() = default;
-  explicit Graph(size_t size);
   ~Graph() = default;
 
   void LoadGraphFromFile(const std::string& filename);
@@ -35,16 +45,6 @@ class Graph {
   bool IsEmpty() const noexcept;
   AdjacencyMatrix GetGraphMatrix() const;
   size_t GetSize() const noexcept;
-
-  // extra methods
-  void print_graph() {
-    for (size_t i = 0; i < size_; ++i) {
-      for (size_t j = 0; j < size_; ++j) {
-        std::cout << graph_matrix_[i][j] << " ";
-      }
-      std::cout << std::endl;
-    }
-  }
 
  private:
   const std::string GetAbsolutePath(const std::string& filename);

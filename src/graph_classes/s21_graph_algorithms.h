@@ -6,6 +6,7 @@
 
 #include "../containers/s21_queue.h"
 #include "../containers/s21_stack.h"
+#include "annealing_algorithm.h"
 #include "ant_algorithm.h"
 #include "s21_graph.h"
 
@@ -17,8 +18,6 @@ class GraphAlgorithms {
   using AdjacencyMatrix = std::vector<std::vector<int>>;
   using VertexSet = std::set<std::pair<int, std::pair<int, int>>>;
   GraphAlgorithms() = default;
-  // подумать какие констуркторы нужны
-  GraphAlgorithms(const Graph& graph) : graph_(graph){};
   ~GraphAlgorithms() = default;
 
   std::vector<int> DepthFirstSearch(const Graph& graph, int start_vertex) const;
@@ -31,18 +30,24 @@ class GraphAlgorithms {
   AdjacencyMatrix GetLeastSpanningTree(const Graph& graph) const;
   TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
 
+  // bonus part
+
+  TsmResult SolveSalesmanProblemWithSimulatedAnnealingMethod(
+      const Graph& graph) const;
+
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
-  void PrintMatrix(const AdjacencyMatrix m) const;
+  void PrintMatrix(const AdjacencyMatrix& m) const;
 
  private:
   int GetClosestVertex(const std::vector<int>& distances,
                        const std::vector<bool>& is_visited) const;
-  bool AllVisited(const std::vector<bool> visited) const;
+  bool AllVisited(const std::vector<bool>& visited) const;
   bool IsOriented(const Graph& graph) const;
   void NormalizeVertexNumeration(std::vector<int>& vertices) const;
   Graph graph_;
 };
+
 };  // namespace SimpleNavigator
 
 #endif  // SIMPLE_NAVIGATOR_GRAPH_ALGORITHMS_H

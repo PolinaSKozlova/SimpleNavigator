@@ -1,8 +1,9 @@
 #include "s21_graph_algorithms.h"
 
-#include <queue>
+#include <algorithm>
+#include <limits>
+#include <random>
 #include <set>
-#include <stack>
 
 namespace SimpleNavigator {
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
@@ -10,7 +11,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
-  if (start_vertex < 1 || start_vertex > (int)graph.GetSize()) {
+  if (start_vertex < 1 || start_vertex > static_cast<int>(graph.GetSize())) {
     throw std::invalid_argument("Invalid start vertex!");
   }
   std::vector<int> visited;
@@ -43,8 +44,8 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
-  if (vertex1 < 1 || vertex1 > (int)graph.GetSize() || vertex2 < 1 ||
-      vertex2 > (int)graph.GetSize()) {
+  if (vertex1 < 1 || vertex1 > static_cast<int>(graph.GetSize()) ||
+      vertex2 < 1 || vertex2 > static_cast<int>(graph.GetSize())) {
     throw std::invalid_argument("Invalid start or end vertex!");
   }
   int num_vertices = graph.GetSize();
@@ -176,7 +177,7 @@ bool GraphAlgorithms::IsOriented(const Graph& graph) const {
   return false;
 }
 
-bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
+bool GraphAlgorithms::AllVisited(const std::vector<bool>& visited) const {
   for (size_t i = 0; i < visited.size(); i++) {
     if (!visited[i]) {
       return false;
@@ -196,10 +197,6 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
 
   TsmResult solution = ant.GetSolution();
   NormalizeVertexNumeration(solution.vertices);
-  std::cout << solution.distance << std::endl;
-  for (size_t i = 0; i < solution.vertices.size(); i++) {
-    std::cout << solution.vertices[i] << " ";
-  }
 
   return solution;
 }
@@ -211,6 +208,14 @@ void GraphAlgorithms::NormalizeVertexNumeration(
   }
 }
 
+TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
+    const Graph& graph) const {
+  AnnealingAlgorithms solution;
+  TsmResult result = solution.SolveSailsmanProblem(graph);
+  NormalizeVertexNumeration(result.vertices);
+  return result;
+}
+
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   for (size_t i = 0; i < vector.size() - 1; i++) {
     std::cout << vector.at(i) << " -> ";
@@ -218,7 +223,7 @@ void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   std::cout << vector.back() << std::endl;
 }
 
-void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix m) const {
+void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix& m) const {
   for (size_t i = 0; i < m.size(); ++i) {
     for (size_t j = 0; j < m[i].size(); ++j) {
       std::cout << m[i][j] << " ";
@@ -232,7 +237,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   if (graph.IsEmpty()) {
     throw std::invalid_argument("Sorry! There is no graph!");
   }
-  if (start_vertex < 1 || start_vertex > (int)graph.GetSize()) {
+  if (start_vertex < 1 || start_vertex > static_cast<int>(graph.GetSize())) {
     throw std::invalid_argument("Invalid start vertex!");
   }
   std::vector<int> visited;
