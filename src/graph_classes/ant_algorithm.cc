@@ -14,12 +14,14 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
   std::set<TsmResult> solutions;
   std::vector<int> path;
   int ant = 0;
+  int no_path = 0;
 
   while (ant < size) {
     MatrixDouble phero;
     int started_here = 0;
     WeightToVertex vertex_weight = std::make_pair(0.0, started_here);
     phero.resize(size, std::vector<double>(size));
+
     while (vertex_weight.second < size) {
       path.resize(0);
       std::vector<bool> visited(size, false);
@@ -34,13 +36,25 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
         auto tmp = vertex_weight.second;
         vertex_weight.second = FindNextVertex(desired_path);
         if (vertex_weight.second == -1) {
-          throw std::invalid_argument("Sorry! There is no path!");
-          // return;
+          vertex_weight.second = started_here;
+          no_path++;
+          if (no_path == size + 1) {
+            throw std::invalid_argument("Sorry! There is no path!");
+          }
+          break;
         }
         vertex_weight.first +=
             graph.GetGraphMatrix()[tmp][vertex_weight.second];
         path.push_back(vertex_weight.second);
         visited[vertex_weight.second] = true;
+      }
+      if (graph.GetGraphMatrix()[vertex_weight.second][started_here] == 0) {
+        vertex_weight.second = started_here;
+        no_path++;
+        if (no_path == size + 1) {
+          throw std::invalid_argument("Sorry! There is no path!");
+        }
+        break;
       }
       path.push_back(started_here);
       vertex_weight.first +=

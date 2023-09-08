@@ -191,17 +191,24 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     throw std::invalid_argument("Sorry! There is no graph!");
   }
   AntAlgorithm ant;
+
   ant.RunAntAlgoritm(graph);
 
-  TsmResult solution;
-  solution.vertices = ant.GetSolution().vertices;
-  solution.distance = ant.GetSolution().distance;
+  TsmResult solution = ant.GetSolution();
+  NormalizeVertexNumeration(solution.vertices);
   std::cout << solution.distance << std::endl;
   for (size_t i = 0; i < solution.vertices.size(); i++) {
     std::cout << solution.vertices[i] << " ";
   }
 
   return solution;
+}
+
+void GraphAlgorithms::NormalizeVertexNumeration(
+    std::vector<int>& vertices) const {
+  for (size_t i = 0; i < vertices.size(); i++) {
+    vertices.at(i) = vertices.at(i) + 1;
+  }
 }
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
