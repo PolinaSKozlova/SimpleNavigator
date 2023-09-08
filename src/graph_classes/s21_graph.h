@@ -12,14 +12,19 @@ struct TsmResult {
   TsmResult(const TsmResult& other) { *this = other; };
   ~TsmResult() = default;
 
-  void operator=(const TsmResult& other) {
+  TsmResult& operator=(const TsmResult& other) {
     vertices = other.vertices;
     distance = other.distance;
+    return *this;
   };
 
-  bool operator<(const TsmResult& o) const { return distance < o.distance; }
+  bool operator<(const TsmResult& other) const {
+    return distance < other.distance;
+  }
 
-  bool operator>(const TsmResult& o) const { return distance > o.distance; }
+  bool operator>(const TsmResult& other) const {
+    return distance > other.distance;
+  }
 
   void PrintTsmResult() const {
     std::cout << "shortest path: ";
@@ -37,8 +42,8 @@ struct TsmResult {
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
-  Graph() = default;
-  ~Graph() = default;
+  // Graph() = default;
+  // ~Graph() = default;
 
   void LoadGraphFromFile(const std::string& filename);
   void ExportGraphToDot(const std::string& filename);

@@ -37,6 +37,7 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
         vertex_weight.second = FindNextVertex(desired_path);
         if (vertex_weight.second == -1) {
           vertex_weight.second = started_here;
+
           no_path++;
           if (no_path == size + 1) {
             throw std::invalid_argument("Sorry! There is no path!");
@@ -69,8 +70,21 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
       vertex_weight.second += 1;
     }
     UpdatePheromonMatrix(phero);
+    //==========================================================================
+    std::cout << "updated pheromon matrix" << std::endl;
+    for (size_t i = 0; i < pheromon_matrix_.size(); ++i) {
+      for (size_t j = 0; j < pheromon_matrix_[i].size(); ++j) {
+        std::cout << pheromon_matrix_[i][j] << " ";
+      }
+      std::cout << std::endl;
+    }
+    //==========================================================================
     phero.clear();
     ant++;
+    std::cout << "ant: " << ant << std::endl;
+    std::cout << "no path: " << no_path << std::endl;
+    std::cout << "solutions: " << solutions.size() << std::endl;
+    std::cout << std::endl;
   }
 
   if (!solutions.empty()) solution_ = *solutions.begin();

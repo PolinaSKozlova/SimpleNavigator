@@ -10,17 +10,19 @@
 TEST(ant_algorithm, test_1) {
   SimpleNavigator::Graph graph;
   graph.LoadGraphFromFile("graph_examples/graph_4");
-  SimpleNavigator::AntAlgorithm best_path;
-  best_path.RunAntAlgoritm(graph);
-  EXPECT_EQ(graph.GetSize() + 1, best_path.GetSolution().vertices.size());
+  SimpleNavigator::GraphAlgorithms best_path;
+  SimpleNavigator::TsmResult res =
+      best_path.SolveTravelingSalesmanProblem(graph);
+  EXPECT_EQ(graph.GetSize() + 1, res.vertices.size());
 }
 
 TEST(ant_algorithm, test_2) {
   SimpleNavigator::Graph graph;
   graph.LoadGraphFromFile("graph_examples/graph_5");
-  SimpleNavigator::AntAlgorithm best_path;
-  best_path.RunAntAlgoritm(graph);
-  EXPECT_EQ(graph.GetSize() + 1, best_path.GetSolution().vertices.size());
+  SimpleNavigator::GraphAlgorithms best_path;
+  SimpleNavigator::TsmResult res =
+      best_path.SolveTravelingSalesmanProblem(graph);
+  EXPECT_EQ(graph.GetSize() + 1, res.vertices.size());
 }
 
 TEST(ant_algorithm, test_3) {

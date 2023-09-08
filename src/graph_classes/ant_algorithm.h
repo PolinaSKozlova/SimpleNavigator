@@ -19,8 +19,8 @@ class AntAlgorithm {
   const double kDistance = 10;
 
  public:
-  AntAlgorithm() = default;
-  ~AntAlgorithm() = default;
+  // AntAlgorithm() = default;
+  // ~AntAlgorithm() = default;
   void RunAntAlgoritm(const Graph &graph);
   TsmResult GetSolution() { return solution_; }
   using MatrixDouble = std::vector<std::vector<double>>;
