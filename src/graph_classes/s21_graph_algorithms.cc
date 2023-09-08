@@ -186,16 +186,34 @@ bool GraphAlgorithms::AllVisited(const std::vector<bool> visited) const {
   return true;
 }
 
-// TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
-//     const Graph& graph) const {
-//   TsmResult result;
-//   return result;
-// }
+TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph& graph) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
+  AntAlgorithm ant;
+
+  ant.RunAntAlgoritm(graph);
+
+  TsmResult solution = ant.GetSolution();
+  NormalizeVertexNumeration(solution.vertices);
+
+  return solution;
+}
+
+void GraphAlgorithms::NormalizeVertexNumeration(
+    std::vector<int>& vertices) const {
+  for (size_t i = 0; i < vertices.size(); i++) {
+    vertices.at(i) = vertices.at(i) + 1;
+  }
+}
 
 TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
     const Graph& graph) const {
   AnnealingAlgorithms solution;
-  return solution.SolveSailsmanProblem(graph);
+  TsmResult result = solution.SolveSailsmanProblem(graph);
+  NormalizeVertexNumeration(result.vertices);
+  return result;
 }
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
@@ -243,4 +261,5 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   }
   return visited;
 }
+
 };  // namespace SimpleNavigator

@@ -108,9 +108,9 @@ class ConsoleApp {
     std::cout << "SolveTravelingSalesmanProblem\n";
     try {
       double time{};
-      // std::cout << "Ant Method:\n";
-      // time = StartTimer(&GraphAlgorithms::SolveTravelingSalesmanProblem);
-      // std::cout << "time: " << time << "\n";
+      std::cout << "Ant Method:\n";
+      time = StartTimer(&GraphAlgorithms::SolveTravelingSalesmanProblem);
+      std::cout << "time: " << time << "\n";
       std::cout << "Simulated Annealing Method:\n";
       time = StartTimer(
           &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);

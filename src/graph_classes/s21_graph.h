@@ -8,6 +8,7 @@
 namespace SimpleNavigator {
 struct TsmResult {
   TsmResult() = default;
+  TsmResult(std::vector<int> other, double d) : vertices(other), distance(d) {}
   TsmResult(const TsmResult& other) { *this = other; };
   ~TsmResult() = default;
 
@@ -15,6 +16,10 @@ struct TsmResult {
     vertices = other.vertices;
     distance = other.distance;
   };
+
+  bool operator<(const TsmResult& o) const { return distance < o.distance; }
+
+  bool operator>(const TsmResult& o) const { return distance > o.distance; }
 
   void PrintTsmResult() const {
     std::cout << "shortest path: ";
@@ -40,16 +45,6 @@ class Graph {
   bool IsEmpty() const noexcept;
   AdjacencyMatrix GetGraphMatrix() const;
   size_t GetSize() const noexcept;
-
-  // extra methods
-  void print_graph() const {
-    for (size_t i = 0; i < size_; ++i) {
-      for (size_t j = 0; j < size_; ++j) {
-        std::cout << graph_matrix_[i][j] << " ";
-      }
-      std::cout << std::endl;
-    }
-  }
 
  private:
   const std::string GetAbsolutePath(const std::string& filename);
