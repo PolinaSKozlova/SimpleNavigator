@@ -39,3 +39,13 @@ TEST(annealing_algorithm, test_3) {
     EXPECT_EQ("In loaded graph path doesn't find!", std::string(e.what()));
   }
 }
+
+TEST(annealing_algorithm, test_4) {
+  SimpleNavigator::Graph graph;
+  SimpleNavigator::AnnealingAlgorithms best_path;
+  try {
+    best_path.SolveSailsmanProblem(graph);
+  } catch (std::invalid_argument &e) {
+    EXPECT_EQ("You should load graph!", std::string(e.what()));
+  }
+}
