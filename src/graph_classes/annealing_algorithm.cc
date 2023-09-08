@@ -1,4 +1,4 @@
-#include "annealing_algo.h"
+#include "annealing_algorithm.h"
 
 namespace SimpleNavigator {
 TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
