@@ -11,7 +11,7 @@ class AnnealingAlgorithms {
   const double kInitialTemperature = 1000.0;
   const double kCoolingRate = 0.99;
   const double kMinTemperature = 0.01;
-  const int kNumIterations = 1000;
+  const int kNumIterations = 100;
 
  public:
   AnnealingAlgorithms() = default;
@@ -19,7 +19,6 @@ class AnnealingAlgorithms {
   TsmResult SolveSailsmanProblem(const Graph& graph) const;
 
  private:
-  double RandomNumber() const noexcept;
   int RandomVertex(int max_value) const noexcept;
   std::vector<int> GenerateRandomSolution(const size_t size) const;
   std::vector<int> GenerateNextSolution(std::vector<int>& path) const;

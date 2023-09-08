@@ -15,7 +15,7 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
   double temperature = kInitialTemperature;
 
   while (temperature > kMinTemperature) {
-    for (int i = 0; i < kNumIterations; i++) {
+    for (size_t i = 0; i < 2 * graph.GetSize() * kNumIterations; ++i) {
       std::vector<int> new_solution = GenerateNextSolution(current_solution);
       double new_cost = CalculateCost(new_solution, graph);
 
