@@ -17,6 +17,7 @@ class AntAlgorithm {
   const double kEvaporation = 0.1;
   const double kPheromons = 0.2;
   const double kDistance = 10;
+  const int kNumIterations = 10;
 
  public:
   // AntAlgorithm() = default;
