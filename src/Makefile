@@ -55,8 +55,8 @@ valgrind: test
          	 --verbose \
 			 ./g_tests
 
-leaks: run
-	CK_FORK=no leaks -atExit -- ./run 
+leaks: app
+	CK_FORK=no leaks -atExit -- ./console_app
 
 .PHONY:
 	all, clean, test, gcov_report s21_graph.a, s21_graph_algorithms.a
@@ -68,5 +68,8 @@ clang:
 cppcheck:
 	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h console/console.h
 
-push:
-	git push origin bonus_part
+run: clean
+	clear
+	$(CC) $(CC_FLAGS) graph_classes/*.cc run.cc -o run -g
+	./run
+

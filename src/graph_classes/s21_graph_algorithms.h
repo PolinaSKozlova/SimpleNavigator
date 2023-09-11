@@ -15,8 +15,8 @@ class GraphAlgorithms {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
   using VertexSet = std::set<std::pair<int, std::pair<int, int>>>;
-  GraphAlgorithms() = default;
-  ~GraphAlgorithms() = default;
+  // GraphAlgorithms() = default;
+  // ~GraphAlgorithms() = default;
 
   std::vector<int> DepthFirstSearch(const Graph& graph, int start_vertex) const;
   std::vector<int> BreadthFirstSearch(const Graph& graph,
@@ -44,7 +44,7 @@ class GraphAlgorithms {
   bool AllVisited(const std::vector<bool>& visited) const;
   bool IsOriented(const Graph& graph) const;
   void NormalizeVertexNumeration(std::vector<int>& vertices) const;
-  Graph graph_;
+  // Graph graph_;
 };
 
 };  // namespace SimpleNavigator

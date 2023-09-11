@@ -16,7 +16,7 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
   int ant = 0;
   int no_path = 0;
 
-  while (ant < size) {
+  while (ant < size * kNumIterations) {
     MatrixDouble phero;
     int started_here = 0;
     WeightToVertex vertex_weight = std::make_pair(0.0, started_here);
@@ -35,10 +35,13 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
 
         auto tmp = vertex_weight.second;
         vertex_weight.second = FindNextVertex(desired_path);
+        // std::cout << "current vertex " << tmp << "; next vertex "
+        //           << vertex_weight.second << std::endl;
         if (vertex_weight.second == -1) {
           vertex_weight.second = started_here;
+
           no_path++;
-          if (no_path == size + 1) {
+          if (no_path == size * kNumIterations && solutions.empty()) {
             throw std::invalid_argument("Sorry! There is no path!");
           }
           break;
@@ -48,10 +51,12 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
         path.push_back(vertex_weight.second);
         visited[vertex_weight.second] = true;
       }
+      // std::cout << "------------------------------------------------------"
+      //           << std::endl;
       if (graph.GetGraphMatrix()[vertex_weight.second][started_here] == 0) {
         vertex_weight.second = started_here;
         no_path++;
-        if (no_path == size + 1) {
+        if (no_path == size * kNumIterations && solutions.empty()) {
           throw std::invalid_argument("Sorry! There is no path!");
         }
         break;
@@ -69,8 +74,13 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
       vertex_weight.second += 1;
     }
     UpdatePheromonMatrix(phero);
+
     phero.clear();
     ant++;
+    // std::cout << "ant: " << ant << std::endl;
+    // std::cout << "no path: " << no_path << std::endl;
+    // std::cout << "solutions: " << solutions.size() << std::endl;
+    // std::cout << std::endl;
   }
 
   if (!solutions.empty()) solution_ = *solutions.begin();
@@ -92,12 +102,14 @@ int AntAlgorithm::FindNextVertex(
   std::uniform_real_distribution<double> distribution(0.0, 1.0);
   auto generated = distribution(generator);
   int next_vertex = -1;
+  // std::cout << "generated: " << generated << std::endl;
   for (size_t i = 0; i < desired_path.size(); ++i) {
-    if (generated < desired_path[i].first &&
-        generated > desired_path[i + 1].first) {
+    if (generated < desired_path[i].first) {
       next_vertex = desired_path[i].second;
+      break;
     }
   }
+  // std::cout << "next vertex: " << next_vertex << std::endl;
 
   return next_vertex;
 }
@@ -126,7 +138,9 @@ void AntAlgorithm::FillDistanceMatrix(const Graph &graph) {
 
   for (size_t i = 0; i < graph.GetSize(); ++i) {
     for (size_t j = 0; j < graph.GetSize(); ++j) {
-      distance_matrix_[i][j] = graph.GetGraphMatrix()[i][j] / kDistance;
+      if (graph.GetGraphMatrix()[i][j] != 0) {
+        distance_matrix_[i][j] = kDistance / graph.GetGraphMatrix()[i][j];
+      }
     }
   }
 }
@@ -138,14 +152,14 @@ std::vector<AntAlgorithm::WeightToVertex> AntAlgorithm::GetDesireToVisit(
   result.resize(visited.size());
   double all_desire = 0.0;
   for (size_t i = 0; i < visited.size(); ++i) {
-    if (!visited[i]) {
+    if (!visited[i] && distance_matrix_[vertex][i] != 0) {
       all_desire += std::pow(pheromon_matrix_[vertex][i], kAlpha) *
                     std::pow(distance_matrix_[vertex][i], kBeta);
     }
   }
 
   for (size_t i = 0; i < visited.size(); ++i) {
-    if (!visited[i]) {
+    if (!visited[i] && distance_matrix_[vertex][i] != 0) {
       result[i].first = std::pow(pheromon_matrix_[vertex][i], kAlpha) *
                         std::pow(distance_matrix_[vertex][i], kBeta) /
                         all_desire;
@@ -153,11 +167,27 @@ std::vector<AntAlgorithm::WeightToVertex> AntAlgorithm::GetDesireToVisit(
     }
   }
 
-  std::sort(result.begin(), result.end());
+  std::sort(result.begin(), result.end(),
+            std::greater<AntAlgorithm::WeightToVertex>());
+  // std::cout << "desired path just sorted : ";
+  // for (size_t i = 0; i < result.size(); ++i) {
+  //   std::cout << result[i].second << "(" << result[i].first << ")"
+  //             << "->";
+  // }
+  // std::cout << std::endl;
 
-  for (size_t i = result.size() - 2; i > 0; --i) {
-    result.at(i).first = result.at(i).first + result.at(i + 1).first;
+  for (size_t i = 1; i < result.size() - 1; ++i) {
+    if (result.at(i).first != 0) {
+      result.at(i).first = result.at(i).first + result.at(i - 1).first;
+    }
   }
+
+  // std::cout << "desired path  : ";
+  // for (size_t i = 0; i < result.size(); ++i) {
+  //   std::cout << result[i].second << "(" << result[i].first << ")"
+  //             << "->";
+  // }
+  // std::cout << std::endl;
 
   return result;
 }
