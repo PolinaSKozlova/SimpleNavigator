@@ -142,7 +142,7 @@ class ConsoleApp {
     }
   }
 
-  void Option_9() { std::cout << "Bye\n"; }
+  void Option_9() { std::cout << "\nBye\n"; }
 
   void DoSearch(
       std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
