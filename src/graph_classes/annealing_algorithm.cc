@@ -7,8 +7,13 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
   TsmResult result;
 
   std::vector<int> current_solution = GenerateRandomSolution(graph.GetSize());
-  double current_cost = CalculateCost(current_solution, graph);
+  for (size_t i = 0; i < graph.GetSize() + 1; ++i) {
+    std::cout << current_solution[i] << " ";
+  }
+  std::cout << std::endl;
 
+  double current_cost = CalculateCost(current_solution, graph);
+  std::cout << "current cost: " << current_cost << std::endl;
   result.vertices = current_solution;
   result.distance = current_cost;
 
@@ -18,8 +23,11 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
     for (size_t i = 0; i < 2 * graph.GetSize() * kNumIterations; ++i) {
       std::vector<int> new_solution = GenerateNextSolution(current_solution);
       double new_cost = CalculateCost(new_solution, graph);
-
-      double delta = current_cost - new_cost;
+      // if (result.distance == -1 && new_cost != -1) {
+      //   result.vertices = new_solution;
+      //   result.distance = new_cost;
+      // }
+      double delta = new_cost - current_cost;
 
       auto random_number = []() {
         std::default_random_engine generator(std::random_device{}());
@@ -32,7 +40,7 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
         current_cost = new_cost;
       }
 
-      if (current_cost < result.distance) {
+      if (current_cost < result.distance || result.distance == -1) {
         result.vertices = current_solution;
         result.distance = current_cost;
       }
@@ -40,7 +48,8 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
       temperature *= kCoolingRate;
     }
   }
-
+  // std::cout << "result.distance: " << result.distance << std::endl;
+  result.PrintTsmResult();
   if (result.distance < 1)
     throw std::invalid_argument("In loaded graph path doesn't find!");
   return result;

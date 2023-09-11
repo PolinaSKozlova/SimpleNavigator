@@ -3,7 +3,7 @@
 
 int main() {
   SimpleNavigator::Graph graph;
-  graph.LoadGraphFromFile("graph_examples/graph_6_non_or");
+  graph.LoadGraphFromFile("graph_examples/graph_10");
   // graph.print_graph();
   // graph.ExportGraphToDot("graph.dot");
 
@@ -25,8 +25,10 @@ int main() {
   //     graph_algorithms.GetLeastSpanningTree(graph);
   // std::cout << " spanning tree " << std::endl;
   // graph_algorithms.PrintMatrix(graph_matrix);
+  // SimpleNavigator::TsmResult res =
+  //     graph_algorithms.SolveTravelingSalesmanProblem(graph);
   SimpleNavigator::TsmResult res =
-      graph_algorithms.SolveTravelingSalesmanProblem(graph);
+      graph_algorithms.SolveSalesmanProblemWithSimulatedAnnealingMethod(graph);
   res.PrintTsmResult();
 
   return 0;
