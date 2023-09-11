@@ -216,6 +216,11 @@ TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
   return result;
 }
 
+// TsmResult GraphAlgorithms::SolveSalesmanProblemWithLittleAlgorithm(
+//     const Graph& graph) const {
+//   return TsmResult();
+// }
+
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   for (size_t i = 0; i < vector.size() - 1; i++) {
     std::cout << vector.at(i) << " -> ";

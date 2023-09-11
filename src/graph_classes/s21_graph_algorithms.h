@@ -11,8 +11,6 @@
 #include "s21_graph.h"
 
 namespace SimpleNavigator {
-const int kInfinity = std::numeric_limits<int>::max();
-
 class GraphAlgorithms {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
@@ -34,6 +32,7 @@ class GraphAlgorithms {
 
   TsmResult SolveSalesmanProblemWithSimulatedAnnealingMethod(
       const Graph& graph) const;
+  TsmResult SolveSalesmanProblemWithLittleAlgorithm(const Graph& graph) const;
 
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
