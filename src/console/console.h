@@ -106,22 +106,30 @@ class ConsoleApp {
 
   void Option_7() const {
     std::cout << "SolveTravelingSalesmanProblem\n";
+    double time{};
     try {
-      double time{};
-      std::cout << "Ant Method:\n";
+      std::cout << "\nAnt Method:\n";
       time = StartTimer(&GraphAlgorithms::SolveTravelingSalesmanProblem);
       std::cout << "time: " << time << "\n";
-      std::cout << "Simulated Annealing Method:\n";
-      time = StartTimer(
-          &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);
-      std::cout << "time: " << time << "\n";
-      // std::cout << "Dynamic Programming Method:\n";
-      // time = StartTimer(
-      //     &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);
-      //  std::cout << "time: " << time << "\n";
     } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
     }
+    try {
+      std::cout << "\nSimulated Annealing Method:\n";
+      time = StartTimer(
+          &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);
+      std::cout << "time: " << time << "\n";
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
+    // try {
+    // std::cout << "\nLittle Algorithm :\n";
+    // time = StartTimer(
+    //     &GraphAlgorithms::SolveSalesmanProblemWithLittleAlgorithm);
+    //  std::cout << "time: " << time << "\n";
+    // } catch (std::invalid_argument& e) {
+    //   std::cout << e.what() << std::endl;
+    // }
   }
 
   void Option_8() {
