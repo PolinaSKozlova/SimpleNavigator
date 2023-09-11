@@ -2,10 +2,13 @@
 #define SIMPLE_NAVIGATOR_GRAPH_H
 
 #include <iostream>
+#include <limits>
 #include <string>
 #include <vector>
 
 namespace SimpleNavigator {
+const int kInfinity = std::numeric_limits<int>::max();
+
 struct TsmResult {
   TsmResult() = default;
   TsmResult(std::vector<int>& other, double d) : vertices(other), distance(d) {}
