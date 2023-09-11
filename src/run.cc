@@ -3,7 +3,7 @@
 
 int main() {
   SimpleNavigator::Graph graph;
-  graph.LoadGraphFromFile("graph_examples/graph_4");
+  graph.LoadGraphFromFile("graph_examples/graph_6_non_or");
   // graph.print_graph();
   // graph.ExportGraphToDot("graph.dot");
 

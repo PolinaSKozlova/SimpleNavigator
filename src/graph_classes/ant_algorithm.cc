@@ -35,8 +35,8 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
 
         auto tmp = vertex_weight.second;
         vertex_weight.second = FindNextVertex(desired_path);
-        std::cout << "current vertex " << tmp << "; next vertex "
-                  << vertex_weight.second << std::endl;
+        // std::cout << "current vertex " << tmp << "; next vertex "
+        //           << vertex_weight.second << std::endl;
         if (vertex_weight.second == -1) {
           vertex_weight.second = started_here;
 
@@ -51,8 +51,8 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
         path.push_back(vertex_weight.second);
         visited[vertex_weight.second] = true;
       }
-      std::cout << "------------------------------------------------------"
-                << std::endl;
+      // std::cout << "------------------------------------------------------"
+      //           << std::endl;
       if (graph.GetGraphMatrix()[vertex_weight.second][started_here] == 0) {
         vertex_weight.second = started_here;
         no_path++;
@@ -68,9 +68,7 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
       for (size_t i = 0; i < path.size() - 1; i++) {
         phero[path[i]][path[i + 1]] = kQ / vertex_weight.first;
       }
-      // if ((int)path.size() == size) {
-      //   solutions.emplace(path, vertex_weight.first);
-      // }
+
       solutions.emplace(path, vertex_weight.first);
       vertex_weight.first = 0.0;
       vertex_weight.second += 1;
@@ -79,9 +77,9 @@ void AntAlgorithm::RunAntAlgoritm(const Graph &graph) {
 
     phero.clear();
     ant++;
-    std::cout << "ant: " << ant << std::endl;
-    std::cout << "no path: " << no_path << std::endl;
-    std::cout << "solutions: " << solutions.size() << std::endl;
+    // std::cout << "ant: " << ant << std::endl;
+    // std::cout << "no path: " << no_path << std::endl;
+    // std::cout << "solutions: " << solutions.size() << std::endl;
     // std::cout << std::endl;
   }
 
