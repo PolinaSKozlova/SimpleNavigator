@@ -6,28 +6,17 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
 
   TsmResult result;
 
-  std::vector<int> current_solution = GenerateRandomSolution(graph.GetSize());
-  for (size_t i = 0; i < graph.GetSize() + 1; ++i) {
-    std::cout << current_solution[i] << " ";
-  }
-  std::cout << std::endl;
-
-  double current_cost = CalculateCost(current_solution, graph);
-  std::cout << "current cost: " << current_cost << std::endl;
-  result.vertices = current_solution;
-  result.distance = current_cost;
+  result.vertices = GenerateRandomSolution(graph.GetSize());
+  result.distance = CalculateCost(result.vertices, graph);
 
   double temperature = kInitialTemperature;
 
+  std::vector<int> new_solution(result.vertices);
+
   while (temperature > kMinTemperature) {
     for (size_t i = 0; i < 2 * graph.GetSize() * kNumIterations; ++i) {
-      std::vector<int> new_solution = GenerateNextSolution(current_solution);
+      new_solution = GenerateNextSolution(new_solution);
       double new_cost = CalculateCost(new_solution, graph);
-      // if (result.distance == -1 && new_cost != -1) {
-      //   result.vertices = new_solution;
-      //   result.distance = new_cost;
-      // }
-      double delta = new_cost - current_cost;
 
       auto random_number = []() {
         std::default_random_engine generator(std::random_device{}());
@@ -35,21 +24,19 @@ TsmResult AnnealingAlgorithms::SolveSailsmanProblem(const Graph& graph) const {
         return distribution(generator);
       };
 
-      if (new_cost > 0 && std::exp(delta / temperature) > random_number()) {
-        current_solution = new_solution;
-        current_cost = new_cost;
-      }
-
-      if (current_cost < result.distance || result.distance == -1) {
-        result.vertices = current_solution;
-        result.distance = current_cost;
+      if (new_cost > 0) {
+        if ((new_cost < result.distance || result.distance < 1) ||
+            (1 - std::exp((new_cost - result.distance) / temperature)) >
+                random_number()) {
+          result.vertices = new_solution;
+          result.distance = new_cost;
+        }
       }
 
       temperature *= kCoolingRate;
     }
   }
-  // std::cout << "result.distance: " << result.distance << std::endl;
-  result.PrintTsmResult();
+
   if (result.distance < 1)
     throw std::invalid_argument("In loaded graph path doesn't find!");
   return result;
@@ -88,14 +75,23 @@ std::vector<int> AnnealingAlgorithms::GenerateNextSolution(
 double AnnealingAlgorithms::CalculateCost(
     const std::vector<int>& current_solution, const Graph& graph) const {
   double distance{0};
-  for (size_t k = 0; k < current_solution.size() - 1; ++k) {
-    if (graph.GetGraphMatrix()[current_solution[k]][current_solution[k + 1]] ==
-        0)
-      return -1;
+  if (graph.GetGraphMatrix()[current_solution[current_solution.size() - 2]]
+                            [current_solution[0]] != 0) {
+    distance +=
+        graph.GetGraphMatrix()[current_solution[current_solution.size() - 2]]
+                              [current_solution[0]];
+
+  } else {
+    return -1.0;
+  }
+  for (size_t k = 0; k < current_solution.size() - 2; ++k) {
     distance +=
         graph.GetGraphMatrix()[current_solution[k]][current_solution[k + 1]];
+    if (graph.GetGraphMatrix()[current_solution[k]][current_solution[k + 1]] ==
+        0) {
+      return -1.0;
+    }
   }
   return distance;
 }
-
 };  // namespace SimpleNavigator
