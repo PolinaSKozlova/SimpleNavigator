@@ -241,6 +241,10 @@ TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
 
 TsmResult GraphAlgorithms::SolveTSMByBranchAndBoundMethod(
     const Graph& graph) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
+
   size_t n = graph.GetSize();
   std::vector<int> path(n + 1);
   std::vector<bool> visited(n, false);
@@ -271,6 +275,10 @@ TsmResult GraphAlgorithms::SolveTSMByBranchAndBoundMethod(
   };
 
   search(0, 0, 0);
+
+  if (best_path.size() == 0) {
+    throw std::invalid_argument("Sorry! There is no path!");
+  }
 
   NormalizeVertexNumeration(best_path);
   TsmResult result;
