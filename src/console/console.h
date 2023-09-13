@@ -73,7 +73,8 @@ class ConsoleApp {
     std::cout << "\t6. Get Least Spanning Tree\n";
     std::cout << "\t7. Solve Traveling Salesman Problem\n";
     std::cout << "\t8. Export graph to dot/gv file\n";
-    std::cout << "\t9. Exit\n";
+    std::cout << "\t9. Bonus. Compare algorithms lead time\n";
+    std::cout << "\t0. Exit\n";
     std::cout << "\n========================================================\n";
   }
 
@@ -104,7 +105,22 @@ class ConsoleApp {
     graph_algo_.PrintMatrix(graph_algo_.GetLeastSpanningTree(graph_));
   }
 
-  void Option_7() const {
+  void Option_7() {
+    std::cout << "\nAnt Method:\n";
+    graph_algo_.SolveTravelingSalesmanProblem(graph_).PrintTsmResult();
+  }
+
+  void Option_8() {
+    std::cout << "Enter filename to export\n";
+    try {
+      LoadOrExportGraph(&Graph::ExportGraphToDot);
+      std::cout << "Graph exported\n";
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
+  }
+
+  void Option_9() const {
     int iterations{};
     std::cout << "Enter number of iterations: \n";
     if (std::cin >> iterations) {
@@ -151,17 +167,7 @@ class ConsoleApp {
     }
   }
 
-  void Option_8() {
-    std::cout << "Enter filename to export\n";
-    try {
-      LoadOrExportGraph(&Graph::ExportGraphToDot);
-      std::cout << "Graph exported\n";
-    } catch (std::invalid_argument& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
-
-  void Option_9() { std::cout << "\nBye\n"; }
+  void Option_0() { std::cout << "\nBye\n"; }
 
   void DoSearch(
       std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
@@ -180,6 +186,7 @@ class ConsoleApp {
       std::cout << "Incorrect input\n";
     }
   }
+
   void DoSearch(std::function<int(const GraphAlgorithms&, const Graph& graph,
                                   int start_vertex, int end_vertex)>
                     f) const {
