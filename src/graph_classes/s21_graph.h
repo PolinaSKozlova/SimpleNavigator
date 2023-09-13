@@ -45,8 +45,6 @@ struct TsmResult {
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
-  // Graph() = default;
-  // ~Graph() = default;
 
   void LoadGraphFromFile(const std::string& filename);
   void ExportGraphToDot(const std::string& filename);
