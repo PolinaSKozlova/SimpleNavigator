@@ -1,7 +1,7 @@
 #all, clean, test, s21_graph.a, s21_graph_algorithms.a
 CC = g++
 CC_FLAGS = -Wall -Wextra -Werror -std=c++17 #-pedantic-errors
-MFLAGS=-c -MMD -MP
+MFLAGS=-MMD -MP
 TEST_FLAGS = -lgtest -pthread
 COVERAGE_FLAGS = --coverage -fprofile-arcs -ftest-coverage 
 SANITIZER_FLAGS = #-fsanitize=address
@@ -15,7 +15,7 @@ GRAPH_ALGO = s21_graph_algorithms
 all: app_console
 
 app_console:
-	$(CC) $(CC_FLAGS) graph_classes/*.cc console_app.cc -o console_app
+	$(CC) $(CC_FLAGS) $(MFLAGS) graph_classes/*.cc console_app.cc -o console_app
 	rm -rf console_app.dSYM & clear
 	./console_app
 
