@@ -6,6 +6,36 @@
 #include <set>
 
 namespace SimpleNavigator {
+std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
+                                                     int start_vertex) const {
+  if (graph.IsEmpty()) {
+    throw std::invalid_argument("Sorry! There is no graph!");
+  }
+  if (start_vertex < 1 || start_vertex > static_cast<int>(graph.GetSize())) {
+    throw std::invalid_argument("Invalid start vertex!");
+  }
+  std::vector<int> visited;
+  int num_vertices = graph.GetSize();
+  std::vector<bool> is_visited(graph.GetSize(), false);
+  containers::queue<int> queue;
+  queue.push(start_vertex - 1);
+  is_visited[start_vertex - 1] = true;
+
+  while (!queue.empty()) {
+    int current_vertex = queue.front();
+    visited.push_back(current_vertex + 1);
+    queue.pop();
+    for (int neighbor = 0; neighbor < num_vertices; neighbor++) {
+      if (graph.GetGraphMatrix()[current_vertex][neighbor] != 0 &&
+          !is_visited[neighbor]) {
+        queue.push(neighbor);
+        is_visited[neighbor] = true;
+      }
+    }
+  }
+  return visited;
+}
+
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
                                                    int start_vertex) const {
   if (graph.IsEmpty()) {
@@ -201,13 +231,6 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   return solution;
 }
 
-void GraphAlgorithms::NormalizeVertexNumeration(
-    std::vector<int>& vertices) const {
-  for (size_t i = 0; i < vertices.size(); i++) {
-    vertices.at(i) = vertices.at(i) + 1;
-  }
-}
-
 TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
     const Graph& graph) const {
   AnnealingAlgorithms solution;
@@ -216,10 +239,52 @@ TsmResult GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod(
   return result;
 }
 
-// TsmResult GraphAlgorithms::SolveSalesmanProblemWithLittleAlgorithm(
-//     const Graph& graph) const {
-//   return TsmResult();
-// }
+TsmResult GraphAlgorithms::SolveTSMByBranchAndBoundMethod(
+    const Graph& graph) const {
+  size_t n = graph.GetSize();
+  std::vector<int> path(n + 1);
+  std::vector<bool> visited(n, false);
+  std::vector<int> best_path;
+  double best_distance = std::numeric_limits<double>::max();
+
+  std::function<void(int, int, double)> search = [&](int level, int cur_vertex,
+                                                     double cur_dist) {
+    path[level] = cur_vertex;
+    visited[cur_vertex] = true;
+    if (level == static_cast<int>(n - 1)) {
+      if (graph.GetGraphMatrix()[cur_vertex][path[0]] != 0 &&
+          cur_dist + graph.GetGraphMatrix()[cur_vertex][path[0]] <
+              best_distance) {
+        best_distance = cur_dist + graph.GetGraphMatrix()[cur_vertex][path[0]];
+        best_path = path;
+      }
+    } else {
+      for (size_t i = 0; i < n; i++) {
+        if (!visited[i] && graph.GetGraphMatrix()[cur_vertex][i] != 0) {
+          search(level + 1, i,
+                 cur_dist + graph.GetGraphMatrix()[cur_vertex][i]);
+        }
+      }
+    }
+
+    visited[cur_vertex] = false;
+  };
+
+  search(0, 0, 0);
+
+  NormalizeVertexNumeration(best_path);
+  TsmResult result;
+  result.vertices = best_path;
+  result.distance = best_distance;
+  return result;
+}
+
+void GraphAlgorithms::NormalizeVertexNumeration(
+    std::vector<int>& vertices) const {
+  for (size_t i = 0; i < vertices.size(); i++) {
+    vertices.at(i) = vertices.at(i) + 1;
+  }
+}
 
 void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
   for (size_t i = 0; i < vector.size() - 1; i++) {
@@ -235,36 +300,6 @@ void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix& m) const {
     }
     std::cout << std::endl;
   }
-}
-
-std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
-                                                     int start_vertex) const {
-  if (graph.IsEmpty()) {
-    throw std::invalid_argument("Sorry! There is no graph!");
-  }
-  if (start_vertex < 1 || start_vertex > static_cast<int>(graph.GetSize())) {
-    throw std::invalid_argument("Invalid start vertex!");
-  }
-  std::vector<int> visited;
-  int num_vertices = graph.GetSize();
-  std::vector<bool> is_visited(graph.GetSize(), false);
-  containers::queue<int> queue;
-  queue.push(start_vertex - 1);
-  is_visited[start_vertex - 1] = true;
-
-  while (!queue.empty()) {
-    int current_vertex = queue.front();
-    visited.push_back(current_vertex + 1);
-    queue.pop();
-    for (int neighbor = 0; neighbor < num_vertices; neighbor++) {
-      if (graph.GetGraphMatrix()[current_vertex][neighbor] != 0 &&
-          !is_visited[neighbor]) {
-        queue.push(neighbor);
-        is_visited[neighbor] = true;
-      }
-    }
-  }
-  return visited;
 }
 
 };  // namespace SimpleNavigator

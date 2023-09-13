@@ -15,8 +15,6 @@ class GraphAlgorithms {
  public:
   using AdjacencyMatrix = std::vector<std::vector<int>>;
   using VertexSet = std::set<std::pair<int, std::pair<int, int>>>;
-  // GraphAlgorithms() = default;
-  // ~GraphAlgorithms() = default;
 
   std::vector<int> DepthFirstSearch(const Graph& graph, int start_vertex) const;
   std::vector<int> BreadthFirstSearch(const Graph& graph,
@@ -29,10 +27,9 @@ class GraphAlgorithms {
   TsmResult SolveTravelingSalesmanProblem(const Graph& graph) const;
 
   // bonus part
-
   TsmResult SolveSalesmanProblemWithSimulatedAnnealingMethod(
       const Graph& graph) const;
-  TsmResult SolveSalesmanProblemWithLittleAlgorithm(const Graph& graph) const;
+  TsmResult SolveTSMByBranchAndBoundMethod(const Graph& graph) const;
 
   // extra methods
   void PrintVector(const std::vector<int>& vector) const;
@@ -44,7 +41,6 @@ class GraphAlgorithms {
   bool AllVisited(const std::vector<bool>& visited) const;
   bool IsOriented(const Graph& graph) const;
   void NormalizeVertexNumeration(std::vector<int>& vertices) const;
-  // Graph graph_;
 };
 
 };  // namespace SimpleNavigator
