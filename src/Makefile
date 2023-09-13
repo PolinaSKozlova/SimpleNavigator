@@ -1,8 +1,9 @@
 #all, clean, test, s21_graph.a, s21_graph_algorithms.a
 CC = g++
 CC_FLAGS = -Wall -Wextra -Werror -std=c++17 #-pedantic-errors
+MFLAGS=-c -MMD -MP
 TEST_FLAGS = -lgtest -pthread
-COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage --coverage
+COVERAGE_FLAGS = --coverage -fprofile-arcs -ftest-coverage 
 SANITIZER_FLAGS = #-fsanitize=address
 SRCS=$(wildcard s21*.cc,*/s21*.cc)
 OBJ_FILES=$(patsubst %.cc,%.o,$(SRCS))
@@ -11,10 +12,10 @@ GRAPH = s21_graph
 GRAPH_ALGO = s21_graph_algorithms
 
 
-all: app
+all: app_console
 
-app: clean
-	$(CC) $(CC_FLAGS) graph_classes/*.cc console_app.cc -o console_app -g
+app_console:
+	$(CC) $(CC_FLAGS) graph_classes/*.cc console_app.cc -o console_app
 	rm -rf console_app.dSYM & clear
 	./console_app
 
@@ -23,12 +24,12 @@ clean:
 
 test: 
 	clear
-	$(CC) $(CC_FLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
+	$(CC) $(CC_FLAGS) $(MFLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
 	./g_tests
 
 gcov_report:
 	clear
-	$(CC) $(CC_FLAGS) $(COVERAGE_FLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
+	$(CC) $(CC_FLAGS) $(MFLAGS) $(COVERAGE_FLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
 	./g_tests
 	lcov -t "$@" -o $@.info -c -d . --no-external  --ignore-errors mismatch --quiet
 	lcov -r $@.info "*include*" -o $@.info  --ignore-errors unused --quiet
@@ -36,12 +37,12 @@ gcov_report:
 	open ./report/index.html
 
 $(GRAPH).a: 
-	$(CC) -c $(FLAGS) graph_classes/s21_graph.cc -o $(GRAPH).o -I .
+	$(CC) -c $(FLAGS) $(MFLAGS) graph_classes/s21_graph.cc -o $(GRAPH).o -I .
 	ar rcs $(GRAPH).a $(GRAPH).o
 	rm *.o
 
 $(GRAPH_ALGO).a:
-	$(CC) -c $(FLAGS) graph_classes/s21_graph_algorithms.cc -o $(GRAPH_ALGO).o -I .
+	$(CC) -c $(FLAGS) $(MFLAGS) graph_classes/s21_graph_algorithms.cc -o $(GRAPH_ALGO).o -I .
 	ar rcs $(GRAPH_ALGO).a $(GRAPH_ALGO).o
 	rm *.o
 
@@ -55,11 +56,11 @@ valgrind: test
          	 --verbose \
 			 ./g_tests
 
-leaks: app
+leaks: app_console
 	CK_FORK=no leaks -atExit -- ./console_app
 
 .PHONY:
-	all, clean, test, gcov_report s21_graph.a, s21_graph_algorithms.a
+	all, clean, test, gcov_report, s21_graph.a, s21_graph_algorithms.a, app_console
 
 clang:
 	clang-format -i --style=Google graph_classes/*.cc graph_classes/*.h
@@ -68,8 +69,5 @@ clang:
 cppcheck:
 	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h console/console.h
 
-run: clean
-	clear
-	$(CC) $(CC_FLAGS) graph_classes/*.cc run.cc -o run -g
-	./run
-
+push:
+	git push origin almost_ready
