@@ -122,14 +122,13 @@ class ConsoleApp {
     } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
     }
-    // try {
-    // std::cout << "\nLittle Algorithm :\n";
-    // time = StartTimer(
-    //     &GraphAlgorithms::SolveSalesmanProblemWithLittleAlgorithm);
-    //  std::cout << "time: " << time << "\n";
-    // } catch (std::invalid_argument& e) {
-    //   std::cout << e.what() << std::endl;
-    // }
+    try {
+      std::cout << "\nBranch and Bounds Method:\n";
+      time = StartTimer(&GraphAlgorithms::SolveTSMByBranchAndBoundMethod);
+      std::cout << "time: " << time << "\n";
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
   }
 
   void Option_8() {
