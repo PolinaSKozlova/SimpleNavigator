@@ -147,6 +147,10 @@ class ConsoleApp {
       std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
                                      int start_vertex)>
           f) const {
+    if (graph_.IsEmpty()) {
+      std::cout << "Sorry! There is no graph!\n";
+      return;
+    }
     int start_vertex{};
     std::cout << "Enter the vertex: \n";
     if (std::cin >> start_vertex) {
@@ -159,6 +163,10 @@ class ConsoleApp {
   void DoSearch(std::function<int(const GraphAlgorithms&, const Graph& graph,
                                   int start_vertex, int end_vertex)>
                     f) const {
+    if (graph_.IsEmpty()) {
+      std::cout << "Sorry! There is no graph!\n";
+      return;
+    }
     int start_vertex{}, end_vertex{};
     std::cout << "Enter the start and the end vertices: \n";
     if (std::cin >> start_vertex >> end_vertex) {
