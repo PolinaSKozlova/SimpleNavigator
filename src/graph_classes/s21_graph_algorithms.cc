@@ -304,7 +304,14 @@ void GraphAlgorithms::PrintVector(const std::vector<int>& vector) const {
 void GraphAlgorithms::PrintMatrix(const AdjacencyMatrix& m) const {
   for (size_t i = 0; i < m.size(); ++i) {
     for (size_t j = 0; j < m[i].size(); ++j) {
-      std::cout << m[i][j] << " ";
+      std::cout << m[i][j];
+      if (m[i][j] < 10) {
+        std::cout << "   ";
+      } else if (m[i][j] < 100) {
+        std::cout << "  ";
+      } else {
+        std::cout << " ";
+      }
     }
     std::cout << std::endl;
   }
