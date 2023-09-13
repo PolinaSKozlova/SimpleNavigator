@@ -117,6 +117,7 @@ TEST(shortest_path, test_1) {
   EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 7, 10), 98);
   EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 3, 8), 23);
 }
+
 TEST(shortest_path, test_2) {
   SimpleNavigator::Graph graph;
   graph.LoadGraphFromFile("graph_examples/graph_10_o");
