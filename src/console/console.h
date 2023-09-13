@@ -105,29 +105,49 @@ class ConsoleApp {
   }
 
   void Option_7() const {
-    std::cout << "SolveTravelingSalesmanProblem\n";
-    double time{};
-    try {
-      std::cout << "\nAnt Method:\n";
-      time = StartTimer(&GraphAlgorithms::SolveTravelingSalesmanProblem);
-      std::cout << "time: " << time << "\n";
-    } catch (std::invalid_argument& e) {
-      std::cout << e.what() << std::endl;
-    }
-    try {
-      std::cout << "\nSimulated Annealing Method:\n";
-      time = StartTimer(
-          &GraphAlgorithms::SolveSalesmanProblemWithSimulatedAnnealingMethod);
-      std::cout << "time: " << time << "\n";
-    } catch (std::invalid_argument& e) {
-      std::cout << e.what() << std::endl;
-    }
-    try {
-      std::cout << "\nBranch and Bounds Method:\n";
-      time = StartTimer(&GraphAlgorithms::SolveTSMByBranchAndBoundMethod);
-      std::cout << "time: " << time << "\n";
-    } catch (std::invalid_argument& e) {
-      std::cout << e.what() << std::endl;
+    int iterations{};
+    std::cout << "Enter number of iterations: \n";
+    if (std::cin >> iterations) {
+      std::cout << "SolveTravelingSalesmanProblem\n";
+      double time{};
+      TsmResult best_path;
+      try {
+        std::cout << "\nAnt Method:\n";
+        for (int i = 0; i < iterations; i++) {
+          time += StartTimer(best_path,
+                             &GraphAlgorithms::SolveTravelingSalesmanProblem);
+        }
+        best_path.PrintTsmResult();
+        std::cout << "time: " << time << "\n";
+      } catch (std::invalid_argument& e) {
+        std::cout << e.what() << std::endl;
+      }
+      try {
+        std::cout << "\nSimulated Annealing Method:\n";
+        for (int i = 0; i < iterations; i++) {
+          time += StartTimer(
+              best_path, &GraphAlgorithms::
+                             SolveSalesmanProblemWithSimulatedAnnealingMethod);
+        }
+        best_path.PrintTsmResult();
+        std::cout << "time: " << time << "\n";
+      } catch (std::invalid_argument& e) {
+        std::cout << e.what() << std::endl;
+      }
+      try {
+        std::cout << "\nBranch and Bounds Method:\n";
+        for (int i = 0; i < iterations; i++) {
+          time += StartTimer(best_path,
+                             &GraphAlgorithms::SolveTSMByBranchAndBoundMethod);
+        }
+        best_path.PrintTsmResult();
+        std::cout << "time: " << time << "\n";
+      } catch (std::invalid_argument& e) {
+        std::cout << e.what() << std::endl;
+      }
+    } else {
+      ClearInput();
+      std::cout << "Incorrect input\n";
     }
   }
 
@@ -188,11 +208,12 @@ class ConsoleApp {
   }
 
   double StartTimer(
+      TsmResult& final_path,
       std::function<TsmResult(const GraphAlgorithms&, const Graph& graph)> f)
       const {
     const auto start{std::chrono::system_clock::now()};
-    f(graph_algo_, graph_).PrintTsmResult();
-
+    // f(graph_algo_, graph_).PrintTsmResult();
+    final_path = f(graph_algo_, graph_);
     const auto finish{std::chrono::system_clock::now()};
     return std::chrono::duration<double>(finish - start).count();
   }
