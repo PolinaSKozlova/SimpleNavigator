@@ -148,7 +148,7 @@ class ConsoleApp {
                                      int start_vertex)>
           f) const {
     if (graph_.IsEmpty()) {
-      std::cout << "Sorry! There is no graph!\n";
+      std::cout << "You should load the graph and try again!\n";
       return;
     }
     int start_vertex{};
@@ -164,7 +164,7 @@ class ConsoleApp {
                                   int start_vertex, int end_vertex)>
                     f) const {
     if (graph_.IsEmpty()) {
-      std::cout << "Sorry! There is no graph!\n";
+      std::cout << "You should load the graph and try again!\n";
       return;
     }
     int start_vertex{}, end_vertex{};
