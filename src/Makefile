@@ -24,7 +24,7 @@ clean:
 
 test: 
 	clear
-	$(CC) $(CC_FLAGS) $(MFLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS)
+	$(CC) $(CC_FLAGS) $(SANITIZER_FLAGS) $(MFLAGS) graph_classes/*.cc graph_tests/graph_*.cc -o g_tests $(TEST_FLAGS) 
 	./g_tests
 
 gcov_report:
@@ -56,7 +56,8 @@ valgrind: test
          	 --verbose \
 			 ./g_tests
 
-leaks: app_console
+leaks: app_console test
+	CK_FORK=no leaks -atExit -- ./g_tests
 	CK_FORK=no leaks -atExit -- ./console_app
 
 .PHONY:
