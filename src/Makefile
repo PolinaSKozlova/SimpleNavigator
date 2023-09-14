@@ -37,17 +37,17 @@ gcov_report:
 	open ./report/index.html
 
 $(GRAPH).a: 
-	$(CC) -c $(FLAGS) $(MFLAGS) graph_classes/s21_graph.cc -o $(GRAPH).o -I .
+	$(CC) -c $(CC_FLAGS) $(MFLAGS) graph_classes/s21_graph.cc -o $(GRAPH).o -I .
 	ar rcs $(GRAPH).a $(GRAPH).o
 	rm *.o
 
 $(GRAPH_ALGO).a:
-	$(CC) -c $(FLAGS) $(MFLAGS) graph_classes/s21_graph_algorithms.cc -o $(GRAPH_ALGO).o -I .
+	$(CC) -c $(CC_FLAGS) $(MFLAGS)  graph_classes/s21_graph_algorithms.cc -o $(GRAPH_ALGO).o -I .
 	ar rcs $(GRAPH_ALGO).a $(GRAPH_ALGO).o
 	rm *.o
 
 %.o:%.cc
-	$(CC) -c $(FLAGS) $< -o $@ -I .
+	$(CC) -c $(CC_FLAGS) $< -o $@ -I .
 
 valgrind: test
 	valgrind --leak-check=full \
