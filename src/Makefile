@@ -69,6 +69,3 @@ clang:
 
 cppcheck:
 	cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem graph_classes/*.cc graph_classes/*.h console/console.h
-
-push:
-	git push origin almost_ready
