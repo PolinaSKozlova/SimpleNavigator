@@ -31,7 +31,6 @@ class GraphAlgorithms {
       const Graph& graph) const;
   TsmResult SolveTSMByBranchAndBoundMethod(const Graph& graph) const;
 
-  // extra methods
   void PrintVector(const std::vector<int>& vector) const;
   void PrintMatrix(const AdjacencyMatrix& m) const;
 

@@ -281,9 +281,7 @@ TsmResult GraphAlgorithms::SolveTSMByBranchAndBoundMethod(
   }
 
   NormalizeVertexNumeration(best_path);
-  TsmResult result;
-  result.vertices = best_path;
-  result.distance = best_distance;
+  TsmResult result(best_path, best_distance);
   return result;
 }
 
