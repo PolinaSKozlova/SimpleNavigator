@@ -15,7 +15,7 @@
 
 namespace SimpleNavigator {
 class ConsoleApp {
-  const int kExit = 9;
+  const int kExit = 0;
   const std::map<int, std::function<void()>> menu_options_{
       {1, std::bind(&ConsoleApp::Option_1, this)},
       {2, std::bind(&ConsoleApp::Option_2, this)},
@@ -25,7 +25,8 @@ class ConsoleApp {
       {6, std::bind(&ConsoleApp::Option_6, this)},
       {7, std::bind(&ConsoleApp::Option_7, this)},
       {8, std::bind(&ConsoleApp::Option_8, this)},
-      {9, std::bind(&ConsoleApp::Option_9, this)}};
+      {9, std::bind(&ConsoleApp::Option_9, this)},
+      {0, std::bind(&ConsoleApp::Option_0, this)}};
 
  public:
   ConsoleApp() = default;
@@ -37,7 +38,7 @@ class ConsoleApp {
   void operator=(const ConsoleApp&&) = delete;
 
   void ShowMenu() {
-    int menu_number{};
+    int menu_number{-1};
     while (menu_number != kExit) {
       DisplayMenu();
       std::cin >> menu_number;
@@ -219,7 +220,6 @@ class ConsoleApp {
       std::function<TsmResult(const GraphAlgorithms&, const Graph& graph)> f)
       const {
     const auto start{std::chrono::system_clock::now()};
-    // f(graph_algo_, graph_).PrintTsmResult();
     final_path = f(graph_algo_, graph_);
     const auto finish{std::chrono::system_clock::now()};
     return std::chrono::duration<double>(finish - start).count();
