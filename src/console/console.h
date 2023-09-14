@@ -50,15 +50,19 @@ class ConsoleApp {
  private:
   void DoAlgorithms(const int menu_number) {
     std::system("clear");
-    try {
-      auto it = menu_options_.find(menu_number);
-      if (it != menu_options_.end()) {
-        it->second();
-      } else {
-        std::cout << "Invalid option\n";
+    if (graph_.IsEmpty() && menu_number > 1 && menu_number <= 9) {
+      std::cout << "You should load the graph and try again!\n";
+    } else {
+      try {
+        auto it = menu_options_.find(menu_number);
+        if (it != menu_options_.end()) {
+          it->second();
+        } else {
+          std::cout << "Invalid option\n";
+        }
+      } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
       }
-    } catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
     }
   }
 
@@ -174,10 +178,6 @@ class ConsoleApp {
       std::function<std::vector<int>(const GraphAlgorithms&, const Graph& graph,
                                      int start_vertex)>
           f) const {
-    if (graph_.IsEmpty()) {
-      std::cout << "You should load the graph and try again!\n";
-      return;
-    }
     int start_vertex{};
     std::cout << "Enter the vertex: \n";
     if (std::cin >> start_vertex) {
@@ -191,10 +191,6 @@ class ConsoleApp {
   void DoSearch(std::function<int(const GraphAlgorithms&, const Graph& graph,
                                   int start_vertex, int end_vertex)>
                     f) const {
-    if (graph_.IsEmpty()) {
-      std::cout << "You should load the graph and try again!\n";
-      return;
-    }
     int start_vertex{}, end_vertex{};
     std::cout << "Enter the start and the end vertices: \n";
     if (std::cin >> start_vertex >> end_vertex) {
