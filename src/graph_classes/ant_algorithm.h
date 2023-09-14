@@ -31,7 +31,7 @@ class AntAlgorithm {
   void FillPheromonMatrix(int size);
   void UpdatePheromonMatrix(const MatrixDouble &phero);
   void FillDistanceMatrix(const Graph &graph);
-  std::vector<WeightToVertex> GetDesireToVisit(std::vector<bool> &visited,
+  std::vector<WeightToVertex> GetDesireToVisit(const std::vector<bool> &visited,
                                                int vertex);
 
   MatrixDouble pheromon_matrix_;

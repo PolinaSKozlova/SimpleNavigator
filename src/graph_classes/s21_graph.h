@@ -39,7 +39,7 @@ struct TsmResult {
   }
 
   std::vector<int> vertices;
-  double distance;
+  double distance{};
 };
 
 class Graph {

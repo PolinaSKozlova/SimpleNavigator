@@ -138,7 +138,7 @@ void AntAlgorithm::FillDistanceMatrix(const Graph &graph) {
 }
 
 std::vector<AntAlgorithm::WeightToVertex> AntAlgorithm::GetDesireToVisit(
-    std::vector<bool> &visited, int vertex) {
+    const std::vector<bool> &visited, int vertex) {
   std::vector<AntAlgorithm::WeightToVertex> result;
 
   result.resize(visited.size());
