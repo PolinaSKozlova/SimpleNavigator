@@ -14,8 +14,6 @@ class AnnealingAlgorithms {
   const int kNumIterations = 100;
 
  public:
-  AnnealingAlgorithms() = default;
-  ~AnnealingAlgorithms() = default;
   TsmResult SolveSailsmanProblem(const Graph& graph) const;
 
  private:
