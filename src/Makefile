@@ -20,7 +20,7 @@ app_console:
 	./console_app
 
 clean:
-	rm -rf *.o *.gcno *.gcda *.info *.a $(REPORT_DIR) g_tests run *.dSYM *.dot *.gv console_app
+	rm -rf *.o *.gcno *.gcda *.info *.a $(REPORT_DIR) g_tests run *.dSYM *.dot *.gv console_app *.d
 
 test: 
 	clear
