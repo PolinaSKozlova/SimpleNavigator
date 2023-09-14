@@ -48,7 +48,7 @@ Graph::AdjacencyMatrix Graph::GetGraphMatrix() const { return graph_matrix_; }
 size_t Graph::GetSize() const noexcept { return size_; }
 
 const std::string Graph::GetAbsolutePath(const std::string& filename) {
-  std::filesystem::path absolute_path = std::filesystem::absolute(filename);
+  std::filesystem::path absolute_path{std::filesystem::absolute(filename)};
   return absolute_path.string();
 }
 
